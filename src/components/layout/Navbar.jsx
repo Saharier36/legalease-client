@@ -46,7 +46,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-[#0A422A] text-white shadow-lg sticky top-0 z-50 transition-colors duration-300">
+    <nav className="w-full bg-[#0A422A] text-white sticky top-0 z-50 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between gap-4">
           {/* Logo / Site Name */}
