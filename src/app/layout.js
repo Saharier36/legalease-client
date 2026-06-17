@@ -1,6 +1,21 @@
 import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { Merriweather, Montserrat } from "next/font/google";
+
+const merriweather = Merriweather({
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
+  variable: "--font-header",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-body", 
+  display: "swap",
+});
 
 export const metadata = {
   title: "LegalEase - Online Lawyer Hiring Platform",
@@ -9,11 +24,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <body
+        className={`${merriweather.variable} ${montserrat.variable} font-body min-h-full flex flex-col bg-background text-foreground`}
+      >
         <NextThemesProvider attribute="class" defaultTheme="dark">
           <Navbar />
-          <main>{children}</main>
+          <main className="grow">{children}</main>
         </NextThemesProvider>
       </body>
     </html>
