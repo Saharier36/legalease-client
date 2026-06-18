@@ -18,6 +18,7 @@ import { FcGoogle } from "react-icons/fc";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { toast } from "sonner";
 import { signUp, signIn } from "@/lib/auth-client";
+import { uploadImageToImgBB } from "@/utils/uploadImage";
 
 export default function RegisterPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,43 +38,14 @@ export default function RegisterPage() {
     }
 
     const imageFile = formData.get("image");
-    let uploadedImageUrl = "";
 
-    if (imageFile && imageFile.size > 0) {
-      setIsUploading(true);
-      const imgBbFormData = new FormData();
-      imgBbFormData.append("image", imageFile);
+    setIsUploading(true);
+    const uploadedImageUrl = await uploadImageToImgBB(imageFile);
+    setIsUploading(false);
 
-      try {
-        const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-
-        const imgBbResponse = await fetch(
-          `https://api.imgbb.com/1/upload?key=${apiKey}`,
-          {
-            method: "POST",
-            body: imgBbFormData,
-          },
-        );
-
-        const imgBbResult = await imgBbResponse.json();
-
-        if (imgBbResult.success) {
-          uploadedImageUrl = imgBbResult.data.url;
-        } else {
-          toast.error("Image upload failed to ImgBB!");
-          setIsUploading(false);
-          return;
-        }
-      } catch (err) {
-        toast.error("Something went wrong during image upload!");
-        setIsUploading(false);
-        return;
-      }
-    } else {
-      toast.error("Please select an image file!");
+    if (!uploadedImageUrl) {
       return;
     }
-    setIsUploading(false);
 
     const { data, error } = await signUp.email({
       email: dataEntries.email,
@@ -240,13 +212,7 @@ export default function RegisterPage() {
           isDisabled={isUploading}
           className="w-full bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 font-bold rounded-none mt-2 text-sm transition-all duration-200 flex items-center justify-center gap-2"
         >
-          {isUploading ? (
-            <>
-              <Spinner size="sm" color="current" />
-            </>
-          ) : (
-            "Sign Up"
-          )}
+          {isUploading ? <Spinner size="sm" color="current" /> : "Sign Up"}
         </Button>
       </Form>
 
