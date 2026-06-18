@@ -21,7 +21,7 @@ import { signUp, signIn } from "@/lib/auth-client";
 export default function RegisterPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("client");
+  const [selectedRole, setSelectedRole] = useState("user");
   const router = useRouter();
 
   const handleSignUp = async (e) => {
@@ -39,7 +39,7 @@ export default function RegisterPage() {
       password: dataEntries.password,
       name: dataEntries.name,
       image: dataEntries.image,
-      data: { role: selectedRole },
+      role: selectedRole,
     });
 
     if (error) {
@@ -84,7 +84,7 @@ export default function RegisterPage() {
             Email Address
           </Label>
           <InputGroup.Input
-            placeholder="john@example.com"
+            placeholder="you@example.com"
             className="bg-white/5 border border-white/10 text-white rounded-none p-2 focus:border-[#A3F367]/50"
           />
           <FieldError className="text-red-400 text-xs mt-1" />
@@ -93,7 +93,7 @@ export default function RegisterPage() {
         <TextField isRequired name="image" className="w-full">
           <Label className="text-slate-300 text-sm font-light">Photo URL</Label>
           <InputGroup.Input
-            placeholder="https://unsplash.com/your-photo.jpg"
+            placeholder="https://example.com/your-photo.jpg"
             className="bg-white/5 border border-white/10 text-white rounded-none p-2 focus:border-[#A3F367]/50"
           />
           <FieldError className="text-red-400 text-xs mt-1" />
@@ -106,14 +106,16 @@ export default function RegisterPage() {
             onChange={(e) => setSelectedRole(e.target.value)}
             className="w-full bg-[#05291A] border border-white/10 text-white rounded-none p-2.5 text-sm focus:outline-none focus:border-[#A3F367]/50"
           >
-            <option value="client">User (Seeking Legal Help)</option>
-            <option value="lawyer">Lawyer (Offering Services)</option>
+            <option value="user" name="role">
+              User (Seeking Legal Help)
+            </option>
+            <option value="lawyer" name="role">
+              Lawyer (Offering Services)
+            </option>
           </select>
         </div>
 
-    
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-       
           <TextField
             isRequired
             name="password"
@@ -183,8 +185,8 @@ export default function RegisterPage() {
                 </Button>
               </InputGroup.Suffix>
             </InputGroup>
-        
-            <div className="h-3.75 sm:h-4" />
+
+            
             <FieldError className="text-red-400 text-xs mt-1" />
           </TextField>
         </div>
@@ -205,7 +207,7 @@ export default function RegisterPage() {
       </div>
 
       <Button
-        onClick={() => signIn.social({ provider: "google", callbackURL: "/" })}
+        onClick={() => signIn.social({ provider: "google" })}
         size="lg"
         className="w-full text-sm bg-white/10 hover:bg-white/20 text-white font-semibold rounded-none border border-white/10 transition-all duration-200"
       >

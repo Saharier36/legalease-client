@@ -26,19 +26,23 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 import NavLink from "../ui/NavLink";
 import ThemeToggle from "../ui/ThemeToggle";
-
+import { signOut, useSession } from "@/lib/auth-client";
 
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isPending = false;
-  const session = null;
+  const { data: session, isPending } = useSession();
 
-  const handleLogout = () => {
-    console.log("Logging out...");
-    router.push("/login");
+  const handleLogout = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/login"); // redirect to login page
+        },
+      },
+    });
   };
 
   const toggleMobileMenu = () => {
@@ -74,9 +78,15 @@ const Navbar = () => {
           </div>
 
           {/* 🌐 Navigation Links (Desktop) */}
-          <div className="hidden lg:flex items-center gap-8 text-sm font-medium">
+          <div className="hidden lg:flex items-center gap-4 text-sm font-medium">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/browse-lawyers">Browse Lawyers</NavLink>
+
+            {!isPending && session && (
+              <NavLink href={`/dashboard/${session.user.role}`}>
+                Dashboard
+              </NavLink>
+            )}
           </div>
 
           {/* ⚡ Action Buttons & User Profile (Desktop) */}
@@ -85,73 +95,38 @@ const Navbar = () => {
             <ThemeToggle />
 
             {!isPending && session ? (
-              <Dropdown>
-                <Button
-                  variant="ghost"
-                  className="flex items-center gap-2 p-1 rounded-full border border-white/20 hover:bg-white/10 text-white"
+              <div className="flex items-center gap-3">
+                <AvatarRoot
+                  size="sm"
+                  className="w-8 h-8 rounded-full border border-[#A3F367] shrink-0"
                 >
-                  <AvatarRoot
-                    size="sm"
-                    className="w-8 h-8 rounded-full border border-[#A3F367]"
-                  >
-                    <AvatarImage
-                      referrerPolicy="no-referrer"
-                      src={session.user.image}
-                      alt={session.user.name}
-                    />
-                    <AvatarFallback className="bg-[#A3F367] text-zinc-950 font-bold">
-                      {session.user.name?.charAt(0).toUpperCase() || "U"}
-                    </AvatarFallback>
-                  </AvatarRoot>
-                  <span className="text-sm font-medium pr-2 text-slate-200">
-                    {session.user.name}
+                  <AvatarImage
+                    referrerPolicy="no-referrer"
+                    src={session.user.image}
+                    alt={session.user.name}
+                  />
+                  <AvatarFallback className="bg-[#A3F367] text-zinc-950 font-bold">
+                    {session.user.name?.charAt(0).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </AvatarRoot>
+
+                <div className="flex flex-col min-w-max max-w-45">
+                  <span className="text-xs font-bold text-white truncate">
+                    Hi,{" "}
+                    {session.user.name
+                      ? session.user.name.split(" ")[0]
+                      : "User"}
                   </span>
+                </div>
+
+                <Button
+                  size="sm"
+                  onClick={handleLogout}
+                  className="bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 rounded-none py-2 font-medium shadow-sm transition-all duration-200 cursor-pointer"
+                >
+                  Logout
                 </Button>
-
-                <Dropdown.Popover className="min-w-56 z-9999 bg-zinc-900 border border-zinc-800 text-white rounded-xl shadow-xl">
-                  <Dropdown.Menu>
-                    <Dropdown.Section>
-                      <Header>
-                        <div className="flex flex-col py-2 px-3 bg-zinc-950/40 rounded-t-lg">
-                          <span className="text-[10px] uppercase tracking-wider text-slate-400">
-                            Signed in as ({session.user.role})
-                          </span>
-                          <span className="text-sm font-bold text-white truncate">
-                            {session.user.name}
-                          </span>
-                          <span className="text-xs text-slate-400 truncate">
-                            {session.user.email}
-                          </span>
-                        </div>
-                      </Header>
-                    </Dropdown.Section>
-                    <Separator className="bg-zinc-800" />
-
-                    {/* Role-based Dashboard Dropdown Link */}
-                    <Dropdown.Section className="p-1">
-                      <Dropdown.Item href={`/dashboard/${session.user.role}`}>
-                        <div className="flex items-center gap-2 py-1 px-2 text-slate-200 hover:text-[#A3F367]">
-                          <FaGauge className="shrink-0 text-sm" />
-                          <Label className="cursor-pointer">My Dashboard</Label>
-                        </div>
-                      </Dropdown.Item>
-                    </Dropdown.Section>
-
-                    <Separator className="bg-zinc-800" />
-                    <Dropdown.Section className="p-1">
-                      <Dropdown.Item variant="danger">
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center gap-2 w-full text-left bg-transparent border-none cursor-pointer text-rose-400 hover:text-rose-300 focus:outline-none py-1 px-2"
-                        >
-                          <FaRightFromBracket className="shrink-0 text-sm" />
-                          <Label className="cursor-pointer">Logout</Label>
-                        </button>
-                      </Dropdown.Item>
-                    </Dropdown.Section>
-                  </Dropdown.Menu>
-                </Dropdown.Popover>
-              </Dropdown>
+              </div>
             ) : (
               <div className="flex items-center gap-3">
                 <Link href="/login">
@@ -249,7 +224,7 @@ const Navbar = () => {
                       alt={session.user.name}
                     />
                     <AvatarFallback className="bg-[#A3F367] text-zinc-950 font-bold">
-                      U
+                      {session.user.name?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </AvatarRoot>
                   <div>

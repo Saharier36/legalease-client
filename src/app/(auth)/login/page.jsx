@@ -37,14 +37,20 @@ export default function LoginPage() {
     }
 
     toast.success("Welcome back to LegalEase!");
-    router.push("/");
+
+    const userRole = data?.user?.role;
+
+    if (userRole === "lawyer" || userRole === "admin") {
+      router.push(`/dashboard/${userRole}`);
+    } else {
+      router.push("/");
+    }
+
     router.refresh();
   };
 
   return (
     <div className="w-full bg-white/5 backdrop-blur-md border border-white/10 p-8 shadow-2xl flex flex-col justify-between rounded-none relative">
-
-
       <div className="text-center mb-6">
         <Link href="/">
           <h2 className="font-header text-3xl font-extrabold tracking-wide text-white">
@@ -119,7 +125,7 @@ export default function LoginPage() {
       </div>
 
       <Button
-        onClick={() => signIn.social({ provider: "google", callbackURL: "/" })}
+        onClick={() => signIn.social({ provider: "google" })}
         size="lg"
         className="w-full text-sm bg-white/10 hover:bg-white/20 text-white font-semibold rounded-none border border-white/10 transition-all duration-200"
       >
