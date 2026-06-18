@@ -162,7 +162,7 @@ const Navbar = () => {
                     Login
                   </Button>
                 </Link>
-                <Link href="/sign-up">
+                <Link href="/register">
                   <Button className="bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 font-bold px-5 shadow-sm transition-all duration-200 rounded-none">
                     Sign Up
                   </Button>
@@ -286,7 +286,7 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link
-                  href="/sign-up"
+                  href="/register"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full"
                 >

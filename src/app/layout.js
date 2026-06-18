@@ -1,8 +1,7 @@
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Merriweather, Montserrat } from "next/font/google";
+import { Toaster } from "sonner";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -30,9 +29,8 @@ export default function RootLayout({ children }) {
         className={`${merriweather.variable} ${montserrat.variable} font-body min-h-full flex flex-col bg-background text-foreground`}
       >
         <NextThemesProvider attribute="class" defaultTheme="dark">
-          <Navbar />
+          <Toaster richColors />
           <main className="grow">{children}</main>
-          <Footer/>
         </NextThemesProvider>
       </body>
     </html>

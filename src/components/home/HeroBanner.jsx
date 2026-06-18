@@ -49,7 +49,7 @@ const SLIDE_DATA = [
     image:
       "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80",
     buttonText: "Join as a Lawyer",
-    buttonLink: "/sign-up",
+    buttonLink: "/register",
     stats: [
       { value: "15k+", label: "Consultations Provided" },
       { value: "100%", label: "Verified Profiles" },
