@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Merriweather, Montserrat } from "next/font/google";
+import Footer from "@/components/layout/Footer";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
         <NextThemesProvider attribute="class" defaultTheme="dark">
           <Navbar />
           <main className="grow">{children}</main>
+          <Footer/>
         </NextThemesProvider>
       </body>
     </html>
