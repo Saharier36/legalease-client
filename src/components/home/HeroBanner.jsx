@@ -13,7 +13,7 @@ import Image from "next/image";
 const SLIDE_DATA = [
   {
     id: 1,
-    title: "Your Trusted Path to Expert Legal Counsel",
+    title: "Find & Hire Expert Legal Counsel",
     description:
       "LegalEase bridges the gap between top-tier verified lawyers and individuals or businesses seeking reliable legal services. Browse, discover, and hire your legal protector today.",
     image:

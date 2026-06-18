@@ -12,6 +12,7 @@ import {
   Description,
   InputGroup,
   Separator,
+  Spinner,
 } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
 import { HiEye, HiEyeOff } from "react-icons/hi";
@@ -22,6 +23,7 @@ export default function RegisterPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [selectedRole, setSelectedRole] = useState("user");
+  const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
 
   const handleSignUp = async (e) => {
@@ -34,11 +36,50 @@ export default function RegisterPage() {
       return;
     }
 
+    const imageFile = formData.get("image");
+    let uploadedImageUrl = "";
+
+    if (imageFile && imageFile.size > 0) {
+      setIsUploading(true);
+      const imgBbFormData = new FormData();
+      imgBbFormData.append("image", imageFile);
+
+      try {
+        const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+
+        const imgBbResponse = await fetch(
+          `https://api.imgbb.com/1/upload?key=${apiKey}`,
+          {
+            method: "POST",
+            body: imgBbFormData,
+          },
+        );
+
+        const imgBbResult = await imgBbResponse.json();
+
+        if (imgBbResult.success) {
+          uploadedImageUrl = imgBbResult.data.url;
+        } else {
+          toast.error("Image upload failed to ImgBB!");
+          setIsUploading(false);
+          return;
+        }
+      } catch (err) {
+        toast.error("Something went wrong during image upload!");
+        setIsUploading(false);
+        return;
+      }
+    } else {
+      toast.error("Please select an image file!");
+      return;
+    }
+    setIsUploading(false);
+
     const { data, error } = await signUp.email({
       email: dataEntries.email,
       password: dataEntries.password,
       name: dataEntries.name,
-      image: dataEntries.image,
+      image: uploadedImageUrl,
       role: selectedRole,
     });
 
@@ -90,14 +131,18 @@ export default function RegisterPage() {
           <FieldError className="text-red-400 text-xs mt-1" />
         </TextField>
 
-        <TextField isRequired name="image" className="w-full">
-          <Label className="text-slate-300 text-sm font-light">Photo URL</Label>
-          <InputGroup.Input
-            placeholder="https://example.com/your-photo.jpg"
-            className="bg-white/5 border border-white/10 text-white rounded-none p-2 focus:border-[#A3F367]/50"
+        <div className="flex flex-col gap-1 w-full">
+          <label className="text-slate-300 text-sm font-light">
+            Upload Photo
+          </label>
+          <input
+            required
+            name="image"
+            type="file"
+            accept="image/*"
+            className="w-full bg-white/5 border border-white/10 text-white rounded-none p-1.5 text-sm file:bg-[#A3F367] file:text-zinc-950 file:border-none file:px-3 file:py-1 file:font-bold file:mr-3 file:cursor-pointer focus:outline-none focus:border-[#A3F367]/50"
           />
-          <FieldError className="text-red-400 text-xs mt-1" />
-        </TextField>
+        </div>
 
         <div className="flex flex-col gap-1 w-full">
           <label className="text-slate-300 text-sm font-light">Join As</label>
@@ -185,8 +230,6 @@ export default function RegisterPage() {
                 </Button>
               </InputGroup.Suffix>
             </InputGroup>
-
-            
             <FieldError className="text-red-400 text-xs mt-1" />
           </TextField>
         </div>
@@ -194,9 +237,16 @@ export default function RegisterPage() {
         <Button
           type="submit"
           size="lg"
-          className="w-full bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 font-bold rounded-none mt-2 text-sm transition-all duration-200"
+          isDisabled={isUploading}
+          className="w-full bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 font-bold rounded-none mt-2 text-sm transition-all duration-200 flex items-center justify-center gap-2"
         >
-          Sign Up
+          {isUploading ? (
+            <>
+              <Spinner size="sm" color="current" />
+            </>
+          ) : (
+            "Sign Up"
+          )}
         </Button>
       </Form>
 

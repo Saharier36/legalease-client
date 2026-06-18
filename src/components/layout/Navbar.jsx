@@ -13,6 +13,7 @@ import {
   AvatarImage,
   AvatarFallback,
   SearchField,
+  Spinner, 
 } from "@heroui/react";
 
 import {
@@ -63,7 +64,7 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* 🔍 Global Search Bar (HeroUI Anatomy using React Icons) */}
+          {/* 🔍 Global Search Bar */}
           <div className="hidden md:block flex-1 max-w-xs lg:max-w-md">
             <SearchField aria-label="Search lawyers">
               <SearchField.Group className="bg-white/10 border border-white/20 px-3 py-1.5 flex items-center gap-2 focus-within:border-[#A3F367] focus-within:ring-1 focus-within:ring-[#A3F367] transition-all rounded-none">
@@ -91,10 +92,13 @@ const Navbar = () => {
 
           {/* ⚡ Action Buttons & User Profile (Desktop) */}
           <div className="hidden lg:flex items-center gap-4">
-            {/* ☀️/🌙 Theme Toggle (Desktop) */}
             <ThemeToggle />
 
-            {!isPending && session ? (
+            {isPending ? (
+              <div className="flex items-center justify-center min-w-[80px]">
+                <Spinner size="sm" color="current" />
+              </div>
+            ) : session ? (
               <div className="flex items-center gap-3">
                 <AvatarRoot
                   size="sm"
@@ -146,9 +150,8 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* 📱 Mobile Menu Button (Hamburger Icon) */}
+          {/* 📱 Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-2">
-            {/* ☀️/🌙 Theme Toggle */}
             <ThemeToggle />
 
             <Button
@@ -171,7 +174,6 @@ const Navbar = () => {
       {/* 📱 Responsive Mobile Menu Drawer */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-[#07301E] border-t border-white/10 px-4 pt-4 pb-6 space-y-4 shadow-inner animate-in fade-in slide-in-from-top duration-200">
-          {/* Search bar inside mobile menu */}
           <div className="block md:hidden pb-2">
             <SearchField aria-label="Search lawyers">
               <SearchField.Group className="bg-white/10 border border-white/20 px-3 py-2 flex items-center gap-2 rounded-none">
@@ -200,7 +202,7 @@ const Navbar = () => {
               Browse Lawyers
             </Link>
 
-            {session && (
+            {!isPending && session && (
               <Link
                 href={`/dashboard/${session.user.role}`}
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -215,7 +217,11 @@ const Navbar = () => {
 
           {/* Authentication inside mobile menu */}
           <div>
-            {session ? (
+            {isPending ? (
+              <div className="flex items-center justify-center p-4">
+                <Spinner size="sm" color="current" />
+              </div>
+            ) : session ? (
               <div className="space-y-4">
                 <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl">
                   <AvatarRoot size="sm">
