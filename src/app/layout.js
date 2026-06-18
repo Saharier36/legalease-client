@@ -1,8 +1,8 @@
-import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Merriweather, Montserrat } from "next/font/google";
-import Footer from "@/components/layout/Footer";
 
 const merriweather = Merriweather({
   subsets: ["latin"],
