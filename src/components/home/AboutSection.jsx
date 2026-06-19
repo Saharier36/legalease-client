@@ -31,7 +31,6 @@ export default function AboutSection() {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start"
         >
-          {/* 📝 বাম পাশ: টাইটেল এরিয়া (image_556048.png অনুযায়ী) */}
           <motion.div
             variants={itemVariants}
             className="md:col-span-5 flex flex-col items-start"
@@ -41,12 +40,10 @@ export default function AboutSection() {
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-header text-foreground leading-tight pb-6 relative">
               Let Our Years of Experience be Your Guide
-              {/* টাইটেলের নিচের সিগনেচার আন্ডারলাইন */}
-              <span className="absolute bottom-0 left-0 w-24 h-[2px] bg-foreground/60" />
+              <span className="absolute bottom-0 left-0 w-24 h-0.5 bg-foreground/60" />
             </h2>
           </motion.div>
 
-          {/* 📖 ডান পাশ: ডেসক্রিপশন প্যারাগ্রাফ */}
           <motion.div
             variants={itemVariants}
             className="md:col-span-7 text-muted-foreground text-sm sm:text-base font-light leading-relaxed space-y-4 pt-2 md:pt-9"

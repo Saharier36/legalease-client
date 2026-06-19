@@ -5,10 +5,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import {
   Button,
-  Dropdown,
-  Header,
   Separator,
-  Label,
   AvatarRoot,
   AvatarImage,
   AvatarFallback,
@@ -18,8 +15,6 @@ import {
 
 import {
   FaScaleBalanced,
-  FaUser,
-  FaGauge,
   FaRightFromBracket,
   FaMagnifyingGlass,
 } from "react-icons/fa6";
@@ -95,7 +90,7 @@ const Navbar = () => {
             <ThemeToggle />
 
             {isPending ? (
-              <div className="flex items-center justify-center min-w-[80px]">
+              <div className="flex items-center justify-center min-w-20">
                 <Spinner size="sm" color="current" />
               </div>
             ) : session ? (
