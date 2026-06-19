@@ -24,6 +24,7 @@ export default function RegisterPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("user");
   const router = useRouter();
 
   const handleSignUp = async (e) => {
@@ -51,6 +52,7 @@ export default function RegisterPage() {
       password: dataEntries.password,
       name: dataEntries.name,
       image: uploadedImageUrl,
+      role: selectedRole,
     });
 
     setIsUploading(false);
@@ -114,6 +116,22 @@ export default function RegisterPage() {
             accept="image/*"
             className="w-full bg-white/5 border border-white/10 text-white rounded-none p-1.5 text-sm file:bg-[#A3F367] file:text-zinc-950 file:border-none file:px-3 file:py-1 file:font-bold file:mr-3 file:cursor-pointer focus:outline-none focus:border-[#A3F367]/50"
           />
+        </div>
+
+        <div className="flex flex-col gap-1 w-full">
+          <label className="text-slate-300 text-sm font-light">Join As</label>
+          <select
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            className="w-full bg-[#05291A] border border-white/10 text-white rounded-none p-2.5 text-sm focus:outline-none focus:border-[#A3F367]/50"
+          >
+            <option value="user" name="role">
+              Client (Seeking Legal Help)
+            </option>
+            <option value="lawyer" name="role">
+              Lawyer (Offering Services)
+            </option>
+          </select>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
