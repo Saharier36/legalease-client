@@ -7,6 +7,10 @@ import { toast } from "sonner";
 import HeroBanner from "@/components/home/HeroBanner";
 import RoleModal from "@/components/home/RoleModal";
 import RoleRedirector from "@/components/home/RoleRedirector";
+import TopExperts from "@/components/home/TopExperts";
+import LegalCategories from "@/components/home/LegalCategories";
+import AboutSection from "@/components/home/AboutSection";
+import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -67,6 +71,10 @@ export default function Home() {
       </Suspense>
 
       <HeroBanner />
+      <AboutSection />
+      <TopExperts />
+      <LegalCategories />
+      <CTASection />
 
       <RoleModal
         isOpen={isRoleMissing}
