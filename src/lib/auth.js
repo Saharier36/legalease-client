@@ -20,8 +20,13 @@ export const auth = betterAuth({
   },
   user: {
     additionalFields: {
-      role: {
-        default: "user",
+      role: {}
+    },
+  },
+  session: {
+    additionalFields: {
+      user: {
+        role: true,
       },
     },
   },
