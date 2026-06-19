@@ -5,9 +5,7 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import {
-  FaChevronRight,
-} from "react-icons/fa6";
+import { FaChevronRight } from "react-icons/fa6";
 import Image from "next/image";
 
 const SLIDE_DATA = [
@@ -58,6 +56,11 @@ const SLIDE_DATA = [
   },
 ];
 
+const textVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function HeroBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -82,15 +85,33 @@ export default function HeroBanner() {
           >
             {/* 📝 Left Side: Content Area */}
             <div className="lg:col-span-7 flex flex-col justify-center">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+              <motion.h1
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6"
+              >
                 {SLIDE_DATA[currentSlide].title}
-              </h1>
+              </motion.h1>
 
-              <p className="text-slate-300 text-base sm:text-lg max-w-xl mb-8 leading-relaxed font-light">
+              <motion.p
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-slate-300 text-base sm:text-lg max-w-xl mb-8 leading-relaxed font-light"
+              >
                 {SLIDE_DATA[currentSlide].description}
-              </p>
+              </motion.p>
 
-              <div className="mb-12 lg:mb-16">
+              <motion.div
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="mb-12 lg:mb-16"
+              >
                 <Link href={SLIDE_DATA[currentSlide].buttonLink}>
                   <Button
                     endContent={<FaChevronRight className="text-xs shrink-0" />}
@@ -99,10 +120,15 @@ export default function HeroBanner() {
                     {SLIDE_DATA[currentSlide].buttonText}
                   </Button>
                 </Link>
-              </div>
+              </motion.div>
 
-              {/* 📊 Stats Section */}
-              <div className="grid grid-cols-3 gap-4 sm:gap-8 border-t border-white/10 pt-8 max-w-lg">
+              <motion.div
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="grid grid-cols-3 gap-4 sm:gap-8 border-t border-white/10 pt-8 max-w-lg"
+              >
                 {SLIDE_DATA[currentSlide].stats.map((stat, i) => (
                   <div key={i} className="flex flex-col">
                     <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -113,7 +139,7 @@ export default function HeroBanner() {
                     </span>
                   </div>
                 ))}
-              </div>
+              </motion.div>
             </div>
 
             {/* 🖼️ Right Side: Image Area */}
@@ -130,10 +156,10 @@ export default function HeroBanner() {
                   alt={SLIDE_DATA[currentSlide].title}
                   fill
                   sizes="(max-w-7xl) 100vw, 450px"
-                  priority={currentSlide === 0} 
+                  priority={currentSlide === 0}
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-
+                
 
                 <div className="absolute inset-0 bg-linear-to-t from-[#0A422A]/40 via-transparent to-transparent opacity-60 pointer-events-none" />
               </motion.div>
