@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSession, authClient } from "@/lib/auth-client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import HeroBanner from "@/components/home/HeroBanner";
 import RoleModal from "@/components/home/RoleModal";
+import RoleRedirector from "@/components/home/RoleRedirector";
 
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isRoleUpdated, setIsRoleUpdated] = useState(() => {
@@ -19,17 +19,6 @@ export default function Home() {
     }
     return false;
   });
-
-  useEffect(() => {
-    const shouldRedirect = searchParams.get("redirect") === "true";
-
-    if (shouldRedirect && session?.user?.role) {
-      const userRole = session.user.role;
-      if (userRole === "lawyer" || userRole === "admin") {
-        router.replace(`/dashboard/${userRole}`);
-      }
-    }
-  }, [session, router, searchParams]);
 
   useEffect(() => {
     if (session?.user?.role && typeof window !== "undefined") {
@@ -73,6 +62,10 @@ export default function Home() {
 
   return (
     <>
+      <Suspense fallback={null}>
+        <RoleRedirector />
+      </Suspense>
+
       <HeroBanner />
 
       <RoleModal
