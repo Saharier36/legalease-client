@@ -40,9 +40,9 @@ export default function RegisterPage() {
 
     setIsUploading(true);
     const uploadedImageUrl = await uploadImageToImgBB(imageFile);
-    setIsUploading(false);
 
     if (!uploadedImageUrl) {
+      setIsUploading(false);
       return;
     }
 
@@ -53,13 +53,16 @@ export default function RegisterPage() {
       image: uploadedImageUrl,
     });
 
+    setIsUploading(false);
+
     if (error) {
       toast.error(error.message);
       return;
     }
 
     toast.success("Account created successfully!");
-    router.push("/");
+    router.push("/?redirect=true");
+    router.refresh();
   };
 
   return (

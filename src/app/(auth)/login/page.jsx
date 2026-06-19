@@ -11,6 +11,7 @@ import {
   FieldError,
   InputGroup,
   Separator,
+  Spinner,
 } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
 import { HiEye, HiEyeOff } from "react-icons/hi";
@@ -19,34 +20,36 @@ import { signIn } from "@/lib/auth-client";
 
 export default function LoginPage() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
     const dataEntries = Object.fromEntries(formData.entries());
 
-    const { data, error } = await signIn.email({
-      email: dataEntries.email,
-      password: dataEntries.password,
-    });
+    try {
+      const { error } = await signIn.email({
+        email: dataEntries.email,
+        password: dataEntries.password,
+      });
 
-    if (error) {
-      toast.error(error.message);
-      return;
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      toast.success("Welcome back to LegalEase!");
+
+      router.push("/?redirect=true");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
-
-    toast.success("Welcome back to LegalEase!");
-
-    const userRole = data?.user?.role;
-
-    if (userRole === "lawyer" || userRole === "admin") {
-      router.push(`/dashboard/${userRole}`);
-    } else {
-      router.push("/");
-    }
-
-    router.refresh();
   };
 
   return (
@@ -112,9 +115,10 @@ export default function LoginPage() {
         <Button
           type="submit"
           size="lg"
+          disabled={isLoading}
           className="w-full bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 font-bold rounded-none mt-4 text-sm transition-all duration-200"
         >
-          Login
+          {isLoading ? <Spinner size="sm" color="current" />  : "Login"}
         </Button>
       </Form>
 
