@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import { Spinner, Button } from "@heroui/react";
 import Sidebar from "@/components/layout/Sidebar";
-import { useSession } from "@/lib/auth-client";
-import { FaBars } from "react-icons/fa";
+import { useUserSession } from "@/core/session-client";
 import { FaScaleBalanced } from "react-icons/fa6";
 import Link from "next/link";
+import { PiSidebarFill } from "react-icons/pi";
 
 export default function DashboardLayout({ children }) {
-  const { data: session, isPending } = useSession();
+  const { user, isPending } = useUserSession();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }) {
     );
   }
 
-  const userRole = session?.user?.role || "user";
+  const userRole = user?.role || "user";
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300 flex flex-col md:flex-row">
@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }) {
               onClick={() => setIsSidebarOpen(true)}
               className="bg-white/5 border border-white/10 text-white hover:bg-white/10 rounded-none shadow-xs size-9 min-w-9"
             >
-              <FaBars className="size-4" />
+              <PiSidebarFill />
             </Button>
 
             <Link href="/">

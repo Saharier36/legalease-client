@@ -6,7 +6,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { Button, AvatarRoot, AvatarImage, AvatarFallback } from "@heroui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "../ui/ThemeToggle";
-import { useSession, signOut } from "@/lib/auth-client";
+import { signOut } from "@/lib/auth-client";
+import { useUserSession } from "@/core/session-client";
 import {
   FaUser,
   FaHistory,
@@ -44,7 +45,7 @@ const ROLE_ROUTES = {
       icon: FaHistory,
     },
     {
-      name: "Manage Legal Profile",
+      name: "Manage Services",
       path: "/dashboard/lawyer/manage-legal-profile",
       icon: FaBriefcase,
     },
@@ -72,7 +73,7 @@ const ROLE_ROUTES = {
 export default function Sidebar({ role = "user", isOpen, onClose }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { user } = useUserSession();
   const menuItems = ROLE_ROUTES[role] || ROLE_ROUTES["user"];
 
   const handleLogout = async () => {
@@ -153,20 +154,20 @@ export default function Sidebar({ role = "user", isOpen, onClose }) {
           <AvatarRoot className="w-8 h-8 rounded-full border border-[#A3F367] shrink-0">
             <AvatarImage
               referrerPolicy="no-referrer"
-              src={session?.user?.image}
-              alt={session?.user?.name || "User"}
+              src={user?.image}
+              alt={user?.name || "User"}
             />
             <AvatarFallback className="bg-[#A3F367] text-zinc-950 text-xs font-bold">
-              {session?.user?.name?.charAt(0).toUpperCase() || "U"}
+              {user?.name?.charAt(0).toUpperCase() || "U"}
             </AvatarFallback>
           </AvatarRoot>
 
           <div className="flex flex-col truncate">
             <span className="text-xs font-bold text-white truncate leading-tight">
-              {session?.user?.name || "Anonymous User"}
+              {user?.name || "Anonymous User"}
             </span>
             <span className="text-[10px] text-slate-400 truncate mt-0.5">
-              {session?.user?.email || "loading..."}
+              {user?.email || "loading..."}
             </span>
           </div>
         </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSession, authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
+import { useUserSession } from "@/core/session-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import HeroBanner from "@/components/home/HeroBanner";
@@ -13,7 +14,7 @@ import AboutSection from "@/components/home/AboutSection";
 import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { user } = useUserSession();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -25,13 +26,13 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (session?.user?.role && typeof window !== "undefined") {
+    if (user?.role && typeof window !== "undefined") {
       sessionStorage.removeItem("role_updated");
     }
-  }, [session]);
+  }, [user]);
 
   const isRoleMissing =
-    !!(session?.user && !session.user.role) && !isRoleUpdated && !isSubmitting;
+    !!(user && !user.role) && !isRoleUpdated && !isSubmitting;
 
   const handleRoleSelection = async (selectedRole) => {
     setIsSubmitting(true);

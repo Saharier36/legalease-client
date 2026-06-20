@@ -22,14 +22,15 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 import NavLink from "../ui/NavLink";
 import ThemeToggle from "../ui/ThemeToggle";
-import { signOut, useSession } from "@/lib/auth-client";
+import { signOut } from "@/lib/auth-client";
+import { useUserSession } from "@/core/session-client";
 
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const { data: session, isPending } = useSession();
+  const { user, isPending } = useUserSession();
 
   const handleLogout = async () => {
     await signOut({
@@ -78,8 +79,8 @@ const Navbar = () => {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/browse-lawyers">Browse Lawyers</NavLink>
 
-            {!isPending && session && (
-              <NavLink href={`/dashboard/${session.user.role}`}>
+            {!isPending && user && (
+              <NavLink href={`/dashboard/${user.role}`}>
                 Dashboard
               </NavLink>
             )}
@@ -93,7 +94,7 @@ const Navbar = () => {
               <div className="flex items-center justify-center min-w-20">
                 <Spinner size="sm" color="current" />
               </div>
-            ) : session ? (
+            ) : user ? (
               <div className="flex items-center gap-3">
                 <AvatarRoot
                   size="sm"
@@ -101,19 +102,19 @@ const Navbar = () => {
                 >
                   <AvatarImage
                     referrerPolicy="no-referrer"
-                    src={session.user.image}
-                    alt={session.user.name}
+                    src={user.image}
+                    alt={user.name}
                   />
                   <AvatarFallback className="bg-[#A3F367] text-zinc-950 font-bold">
-                    {session.user.name?.charAt(0).toUpperCase() || "U"}
+                    {user.name?.charAt(0).toUpperCase() || "U"}
                   </AvatarFallback>
                 </AvatarRoot>
 
                 <div className="flex flex-col min-w-max max-w-45">
                   <span className="text-xs font-bold text-white truncate">
                     Hi,{" "}
-                    {session.user.name
-                      ? session.user.name.split(" ")[0]
+                    {user.name
+                      ? user.name.split(" ")[0]
                       : "User"}
                   </span>
                 </div>
@@ -197,13 +198,13 @@ const Navbar = () => {
               Browse Lawyers
             </Link>
 
-            {!isPending && session && (
+            {!isPending && user && (
               <Link
-                href={`/dashboard/${session.user.role}`}
+                href={`/dashboard/${user.role}`}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-base text-slate-200 hover:text-[#A3F367]"
               >
-                Dashboard ({session.user.role})
+                Dashboard ({user.role})
               </Link>
             )}
           </div>
@@ -216,24 +217,24 @@ const Navbar = () => {
               <div className="flex items-center justify-center p-4">
                 <Spinner size="sm" color="current" />
               </div>
-            ) : session ? (
+            ) : user ? (
               <div className="space-y-4">
                 <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl">
                   <AvatarRoot size="sm">
                     <AvatarImage
-                      src={session.user.image}
-                      alt={session.user.name}
+                      src={user.image}
+                      alt={user.name}
                     />
                     <AvatarFallback className="bg-[#A3F367] text-zinc-950 font-bold">
-                      {session.user.name?.charAt(0).toUpperCase() || "U"}
+                      {user.name?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </AvatarRoot>
                   <div>
                     <p className="text-sm font-semibold text-white">
-                      {session.user.name}
+                      {user.name}
                     </p>
                     <p className="text-xs text-slate-400 truncate max-w-50">
-                      {session.user.email}
+                      {user.email}
                     </p>
                   </div>
                 </div>
