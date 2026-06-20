@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { Table, Button, Card, Avatar } from "@heroui/react";
 import { useUserSession } from "@/core/session-client";
 import { fetchLawyerServices } from "@/services/lawyers/lawyerQueries";
+import EditServiceModal from "./EditServiceModal";
 
 export default function ServicesListTable({ refreshKey = 0 }) {
   const { user } = useUserSession();
@@ -12,23 +13,18 @@ export default function ServicesListTable({ refreshKey = 0 }) {
 
   const currentLawyerId = user?.id;
 
+  const [refreshTick, setRefreshTick] = useState(0);
+
   useEffect(() => {
-    const getServicesData = async () => {
-      try {
-        const result = await fetchLawyerServices(currentLawyerId);
-
-        if (Array.isArray(result)) {
-          setServices(result);
-        }
-      } catch (error) {
-        console.error("Error fetching services dynamically:", error);
-      }
-    };
-
-    if (currentLawyerId) {
-      getServicesData();
-    }
-  }, [currentLawyerId, refreshKey]);
+    if (!currentLawyerId) return;
+    let cancelled = false;
+    fetchLawyerServices(currentLawyerId)
+      .then((result) => {
+        if (!cancelled && Array.isArray(result)) setServices(result);
+      })
+      .catch((err) => console.error("Error fetching services:", err));
+    return () => { cancelled = true; };
+  }, [currentLawyerId, refreshKey, refreshTick]);
 
   return (
     <Card className="bg-transparent border border-zinc-200 dark:border-zinc-800 rounded-none p-4 md:p-6 shadow-sm">
@@ -115,13 +111,10 @@ export default function ServicesListTable({ refreshKey = 0 }) {
 
                   <Table.Cell className="text-right rounded-none">
                     <div className="flex items-center justify-end gap-2">
-                      <Button
-                        size="sm"
-                        className="bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 p-2.5 min-w-0 rounded-full h-8 w-8 flex items-center justify-center transition-colors"
-                        title="Edit Service"
-                      >
-                        <FaEdit className="text-xs text-zinc-800 dark:text-zinc-200" />
-                      </Button>
+                      <EditServiceModal
+                        service={service}
+                        onRefresh={() => setRefreshTick((t) => t + 1)}
+                      />
 
                       <Button
                         size="sm"
