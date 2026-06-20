@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaTrash } from "react-icons/fa";
-import { Table, Button, Card, Avatar } from "@heroui/react";
+import { Table, Card, Avatar } from "@heroui/react";
 import { useUserSession } from "@/core/session-client";
 import { fetchLawyerServices } from "@/services/lawyers/lawyerQueries";
 import EditServiceModal from "./EditServiceModal";
+import DeleteServiceModal from "./DeleteServiceModal";
 
 export default function ServicesListTable({ refreshKey = 0 }) {
   const { user } = useUserSession();
@@ -116,13 +116,10 @@ export default function ServicesListTable({ refreshKey = 0 }) {
                         onRefresh={() => setRefreshTick((t) => t + 1)}
                       />
 
-                      <Button
-                        size="sm"
-                        className="bg-danger/10 hover:bg-danger text-danger hover:text-zinc-950 p-2.5 min-w-0 rounded-full h-8 w-8 flex items-center justify-center transition-colors"
-                        title="Delete Service"
-                      >
-                        <FaTrash className="text-xs" />
-                      </Button>
+                      <DeleteServiceModal
+                        service={service}
+                        onRefresh={() => setRefreshTick((t) => t + 1)}
+                      />
                     </div>
                   </Table.Cell>
                 </Table.Row>
