@@ -128,74 +128,74 @@ export default function AddServiceForm({ onPublish }) {
     }
   };
 
- const handleSubmit = async (e) => {
-   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-   if (!user) {
-     toast.error("You must be logged in to add a service!");
-     return;
-   }
+    if (!user) {
+      toast.error("You must be logged in to add a service!");
+      return;
+    }
 
-   const formData = new FormData(e.currentTarget);
-   const imageFile = formData.get("image");
+    const formData = new FormData(e.currentTarget);
+    const imageFile = formData.get("image");
 
-   if (!imageFile || imageFile.size === 0) {
-     toast.error("Please select a profile photo!");
-     return;
-   }
+    if (!imageFile || imageFile.size === 0) {
+      toast.error("Please select a profile photo!");
+      return;
+    }
 
-   if (!selectedCategory) {
-     toast.error("Please select a specialization category!");
-     return;
-   }
+    if (!selectedCategory) {
+      toast.error("Please select a specialization category!");
+      return;
+    }
 
-   setIsUploading(true);
-   const uploadedImageUrl = await uploadImageToImgBB(imageFile);
+    setIsUploading(true);
+    const uploadedImageUrl = await uploadImageToImgBB(imageFile);
 
-   if (!uploadedImageUrl) {
-     setIsUploading(false);
-     return;
-   }
+    if (!uploadedImageUrl) {
+      setIsUploading(false);
+      return;
+    }
 
-   const data = {};
-   formData.forEach((value, key) => {
-     if (key !== "image" && key !== "specialization") {
-       data[key] = value.toString();
-     }
-   });
+    const data = {};
+    formData.forEach((value, key) => {
+      if (key !== "image" && key !== "specialization") {
+        data[key] = value.toString();
+      }
+    });
 
-   data.specialization = selectedCategory;
-   data.image = uploadedImageUrl;
-   data.status = "Available";
+    data.specialization = selectedCategory;
+    data.image = uploadedImageUrl;
+    data.status = "Available";
 
-   data.lawyerEmail = user.email;
-   data.lawyerName = user.name;
-   data.lawyerId = user.id;
-   data.createdAt = new Date().toISOString();
+    data.lawyerEmail = user.email;
+    data.lawyerName = user.name;
+    data.lawyerId = user.id;
+    data.createdAt = new Date().toISOString();
 
-   try {
-     const result = await createLawyerService(data);
+    try {
+      const result = await createLawyerService(data);
 
-     if (result?.error) {
-       toast.error(result.message);
-       return;
-     }
+      if (result?.error) {
+        toast.error(result.message);
+        return;
+      }
 
-     if (result) {
-       toast.success("Service published successfully!");
-       if (onPublish) onPublish(data);
+      if (result) {
+        toast.success("Service published successfully!");
+        if (onPublish) onPublish(result);
 
-       e.target.reset();
-       setFileName("No file chosen...");
-       setSelectedCategory("");
-     }
-   } catch (error) {
-     console.error("Form execution error:", error);
-     toast.error("Something went wrong. Please try again!");
-   } finally {
-     setIsUploading(false);
-   }
- };
+        e.target.reset();
+        setFileName("No file chosen...");
+        setSelectedCategory("");
+      }
+    } catch (error) {
+      console.error("Form execution error:", error);
+      toast.error("Something went wrong. Please try again!");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   if (isSessionLoading) {
     return (

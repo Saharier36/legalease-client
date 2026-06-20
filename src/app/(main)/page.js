@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useUserSession } from "@/core/session-client";
 import { useRouter } from "next/navigation";
@@ -17,25 +17,16 @@ export default function Home() {
   const { user } = useUserSession();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasStartedRoleSelection, setHasStartedRoleSelection] = useState(false);
 
-  const [isRoleUpdated, setIsRoleUpdated] = useState(() => {
-    if (typeof window !== "undefined") {
-      return sessionStorage.getItem("role_updated") === "true";
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    if (user?.role && typeof window !== "undefined") {
-      sessionStorage.removeItem("role_updated");
-    }
-  }, [user]);
-
-  const isRoleMissing =
-    !!(user && !user.role) && !isRoleUpdated && !isSubmitting;
+  const isRoleMissing = !!user && !user.role;
+  const isRoleModalOpen =
+    isRoleMissing && !isSubmitting && !hasStartedRoleSelection;
 
   const handleRoleSelection = async (selectedRole) => {
+    setHasStartedRoleSelection(true);
     setIsSubmitting(true);
+
     try {
       const { error } = await authClient.updateUser({
         role: selectedRole,
@@ -44,11 +35,6 @@ export default function Home() {
       if (!error) {
         toast.success(`Successfully joined as a ${selectedRole}!`);
 
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem("role_updated", "true");
-        }
-        setIsRoleUpdated(true);
-
         if (selectedRole === "lawyer") {
           return router.replace("/dashboard/lawyer");
         } else if (typeof authClient.session?.reload === "function") {
@@ -56,10 +42,12 @@ export default function Home() {
         }
       } else {
         toast.error(error.message || "Failed to update role");
+        setHasStartedRoleSelection(false);
       }
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong!");
+      setHasStartedRoleSelection(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -78,7 +66,7 @@ export default function Home() {
       <CTASection />
 
       <RoleModal
-        isOpen={isRoleMissing}
+        isOpen={isRoleModalOpen}
         isSubmitting={isSubmitting}
         onSelectRole={handleRoleSelection}
       />

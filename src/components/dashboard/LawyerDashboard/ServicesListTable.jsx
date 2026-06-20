@@ -1,10 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import { Table, Button, Card, Avatar } from "@heroui/react"; 
+import { Table, Button, Card, Avatar } from "@heroui/react";
+import { useUserSession } from "@/core/session-client";
+import { fetchLawyerServices } from "@/services/lawyers/lawyerQueries";
 
-export default function ServicesListTable({ services }) {
+export default function ServicesListTable({ refreshKey = 0 }) {
+  const { user } = useUserSession();
+  const [services, setServices] = useState([]);
+
+  const currentLawyerId = user?.id;
+
+  useEffect(() => {
+    const getServicesData = async () => {
+      try {
+        const result = await fetchLawyerServices(currentLawyerId);
+
+        if (Array.isArray(result)) {
+          setServices(result);
+        }
+      } catch (error) {
+        console.error("Error fetching services dynamically:", error);
+      }
+    };
+
+    if (currentLawyerId) {
+      getServicesData();
+    }
+  }, [currentLawyerId, refreshKey]);
+
   return (
     <Card className="bg-transparent border border-zinc-200 dark:border-zinc-800 rounded-none p-4 md:p-6 shadow-sm">
       <div className="mb-4">
@@ -23,7 +48,10 @@ export default function ServicesListTable({ services }) {
             className="bg-transparent"
           >
             <Table.Header>
-              <Table.Column className="bg-zinc-100/60 dark:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 font-bold rounded-none">
+              <Table.Column
+                isRowHeader
+                className="bg-zinc-100/60 dark:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 font-bold rounded-none"
+              >
                 Service Details
               </Table.Column>
               <Table.Column className="bg-zinc-100/60 dark:bg-zinc-900/40 text-zinc-600 dark:text-zinc-400 font-bold rounded-none">
@@ -39,10 +67,10 @@ export default function ServicesListTable({ services }) {
                 Actions
               </Table.Column>
             </Table.Header>
-            <Table.Body>
+            <Table.Body emptyContent={"No legal services published yet."}>
               {services.map((service) => (
                 <Table.Row
-                  key={service._id}
+                  key={service._id?.$oid || service._id}
                   className="border-b border-zinc-200/60 dark:border-zinc-800/60 hover:bg-zinc-100/20 dark:hover:bg-zinc-900/20 transition-colors"
                 >
                   <Table.Cell className="py-4 px-4 flex items-center gap-3 max-w-sm rounded-none">
@@ -70,7 +98,7 @@ export default function ServicesListTable({ services }) {
                   </Table.Cell>
 
                   <Table.Cell className="font-mono font-bold rounded-none whitespace-nowrap">
-                    ৳{service.fee.toLocaleString()}
+                    ${service.fee?.toLocaleString()}
                   </Table.Cell>
 
                   <Table.Cell className="rounded-none">
