@@ -37,12 +37,12 @@ export default function DeleteServiceModal({ service, onRefresh }) {
     <AlertDialog>
 
       <AlertDialog.Trigger>
-        <button
+        <Button
           className="bg-danger/10 hover:bg-danger text-danger hover:text-zinc-950 p-2.5 min-w-0 rounded-full h-8 w-8 flex items-center justify-center transition-colors"
           title="Delete Service"
         >
           <FaTrash className="text-xs" />
-        </button>
+        </Button>
       </AlertDialog.Trigger>
 
       {/* ✅ Backdrop > Container > Dialog */}
