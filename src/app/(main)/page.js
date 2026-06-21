@@ -15,7 +15,6 @@ import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
   const { user } = useUserSession();
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasStartedRoleSelection, setHasStartedRoleSelection] = useState(false);
 
@@ -36,9 +35,11 @@ export default function Home() {
         toast.success(`Successfully joined as a ${selectedRole}!`);
 
         if (selectedRole === "lawyer") {
-          return router.replace("/dashboard/lawyer");
-        } else if (typeof authClient.session?.reload === "function") {
-          await authClient.session.reload();
+          window.location.href = "/dashboard/lawyer";
+        } else if (selectedRole === "admin") {
+          window.location.href = "/dashboard/admin";
+        } else {
+          window.location.href = "/dashboard/user";
         }
       } else {
         toast.error(error.message || "Failed to update role");
