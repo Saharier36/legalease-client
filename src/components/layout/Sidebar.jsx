@@ -19,11 +19,13 @@ import {
   FaChartPie,
   FaSignOutAlt,
   FaTimes,
+  FaTachometerAlt,
 } from "react-icons/fa";
 import { FaScaleBalanced } from "react-icons/fa6";
 
 const ROLE_ROUTES = {
   user: [
+    { name: "Dashboard", path: "/dashboard/user", icon: FaTachometerAlt },
     { name: "My Profile", path: "/dashboard", icon: FaUser },
     {
       name: "Hiring History",
@@ -38,6 +40,7 @@ const ROLE_ROUTES = {
     { name: "My Comments", path: "/dashboard/user/comments", icon: FaComments },
   ],
   lawyer: [
+    { name: "Dashboard", path: "/dashboard/lawyer", icon: FaTachometerAlt },
     { name: "My Profile", path: "/dashboard", icon: FaUser },
     {
       name: "Hiring Requests",
@@ -51,6 +54,7 @@ const ROLE_ROUTES = {
     },
   ],
   admin: [
+    { name: "Dashboard", path: "/dashboard/admin", icon: FaTachometerAlt },
     { name: "My Profile", path: "/dashboard", icon: FaUser },
     {
       name: "Manage Users",
