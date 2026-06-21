@@ -1,6 +1,7 @@
 "use client";
 
 import LawyerCard from "@/components/ui/LawyerCard";
+import LawyerFilter from "@/components/ui/LawyerFilter";
 import { getLawyers } from "@/services/lawyers/lawyerQueries";
 import React, { useEffect, useState } from "react";
 import { BiSpreadsheet } from "react-icons/bi";
@@ -10,14 +11,36 @@ export default function AllLawyers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const [filters, setFilters] = useState({
+    search: "",
+    specialization: "",
+    sort: "",
+  });
+
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleResetFilters = () => {
+    setFilters({
+      search: "",
+      specialization: "",
+      sort: "",
+    });
+  };
+
   useEffect(() => {
     const fetchLawyersData = async () => {
       try {
         setLoading(true);
-        const data = await getLawyers();
+        const data = await getLawyers(filters);
 
         if (data && !data.error) {
           setLawyers(data);
+          setError(false);
         } else {
           setError(true);
         }
@@ -29,8 +52,12 @@ export default function AllLawyers() {
       }
     };
 
-    fetchLawyersData();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      fetchLawyersData();
+    }, 400);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [filters]);
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8">
@@ -51,6 +78,12 @@ export default function AllLawyers() {
           </p>
         </div>
 
+        <LawyerFilter
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onReset={handleResetFilters}
+        />
+
         {!loading && error && (
           <div className="text-center py-12 border border-dashed border-red-500/30 bg-red-500/5 rounded-none">
             <p className="text-sm font-bold text-red-500 uppercase tracking-wider">
@@ -62,16 +95,20 @@ export default function AllLawyers() {
           </div>
         )}
 
-        {!loading && !error && lawyers.length === 0 && (
+        {loading ? (
+          <div className="text-center py-16">
+            <span className="text-xs font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 animate-pulse">
+              Filtering database...
+            </span>
+          </div>
+        ) : !error && lawyers.length === 0 ? (
           <div className="text-center py-16 border border-dashed border-zinc-300 dark:border-zinc-800 rounded-none bg-zinc-100/50 dark:bg-zinc-900/10">
             <p className="text-sm font-black text-zinc-400 uppercase tracking-widest">
-              No Lawyers Available
+              No Lawyers Match Your Search
             </p>
           </div>
-        )}
-
-        {!loading && !error && lawyers.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {lawyers.map((lawyer, index) => (
               <LawyerCard key={lawyer._id} lawyer={lawyer} index={index} />
             ))}
