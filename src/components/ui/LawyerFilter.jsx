@@ -41,8 +41,8 @@ const STATIC_CATEGORIES = [
 ];
 
 const SORT_OPTIONS = [
-  { id: "lowToHigh", name: "Hourly price: Low to High" },
-  { id: "highToLow", name: "Hourly price: High to Low" },
+  { id: "lowToHigh", name: "Hourly fee: Low to High" },
+  { id: "highToLow", name: "Hourly fee: High to Low" },
 ];
 
 export default function LawyerFilter({ onFilterChange, onReset, filters }) {
@@ -195,7 +195,7 @@ export default function LawyerFilter({ onFilterChange, onReset, filters }) {
                   : dropdownMutedTextClass
               }`}
             >
-              {selectedSort?.name || "Hourly price"}
+              {selectedSort?.name || "Hourly fee"}
             </span>
             <FaChevronDown
               className={`shrink-0 text-xs ml-1 sm:ml-2 ${dropdownMutedTextClass}`}

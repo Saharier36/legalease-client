@@ -1,15 +1,20 @@
 "use client";
 
 import LawyerCard from "@/components/ui/LawyerCard";
+import LawyerCardSkeletonGrid from "@/components/ui/LawyerCardSkeleton";
 import LawyerFilter from "@/components/ui/LawyerFilter";
 import { getLawyers } from "@/services/lawyers/lawyerQueries";
 import React, { useEffect, useState } from "react";
 import { BiSpreadsheet } from "react-icons/bi";
+import { Pagination } from "@heroui/react";
 
 export default function AllLawyers() {
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const lawyersPerPage = 12;
 
   const [filters, setFilters] = useState({
     search: "",
@@ -22,6 +27,7 @@ export default function AllLawyers() {
       ...prev,
       [key]: value,
     }));
+    setCurrentPage(1);
   };
 
   const handleResetFilters = () => {
@@ -30,6 +36,7 @@ export default function AllLawyers() {
       specialization: "",
       sort: "",
     });
+    setCurrentPage(1); 
   };
 
   useEffect(() => {
@@ -58,6 +65,11 @@ export default function AllLawyers() {
 
     return () => clearTimeout(delayDebounceFn);
   }, [filters]);
+
+  const indexOfLastLawyer = currentPage * lawyersPerPage;
+  const indexOfFirstLawyer = indexOfLastLawyer - lawyersPerPage;
+  const currentLawyers = lawyers.slice(indexOfFirstLawyer, indexOfLastLawyer);
+  const totalPages = Math.ceil(lawyers.length / lawyersPerPage);
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8">
@@ -96,11 +108,7 @@ export default function AllLawyers() {
         )}
 
         {loading ? (
-          <div className="text-center py-16">
-            <span className="text-xs font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 animate-pulse">
-              Filtering database...
-            </span>
-          </div>
+          <LawyerCardSkeletonGrid />
         ) : !error && lawyers.length === 0 ? (
           <div className="text-center py-16 border border-dashed border-zinc-300 dark:border-zinc-800 rounded-none bg-zinc-100/50 dark:bg-zinc-900/10">
             <p className="text-sm font-black text-zinc-400 uppercase tracking-widest">
@@ -108,11 +116,65 @@ export default function AllLawyers() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {lawyers.map((lawyer, index) => (
-              <LawyerCard key={lawyer._id} lawyer={lawyer} index={index} />
-            ))}
-          </div>
+          !error && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {currentLawyers.map((lawyer, index) => (
+                  <LawyerCard key={lawyer._id} lawyer={lawyer} index={index} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="mt-12 flex w-full items-center justify-center">
+                  <Pagination className="mx-auto flex justify-center">
+                    <Pagination.Content className="mx-auto flex flex-wrap items-center justify-center gap-2">
+                      <Pagination.Item>
+                        <Pagination.Previous
+                          isDisabled={currentPage === 1}
+                          onPress={() => setCurrentPage((p) => p - 1)}
+                          className="rounded-none bg-white/5 border border-white/10 hover:border-[#A3F367] hover:text-[#A3F367] transition-all data-[disabled=true]:opacity-30 data-[disabled=true]:cursor-not-allowed text-zinc-400 flex items-center justify-center px-3"
+                        >
+                          <Pagination.PreviousIcon />
+                          <span className="hidden sm:inline ml-1">
+                            Previous
+                          </span>
+                        </Pagination.Previous>
+                      </Pagination.Item>
+
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (p) => (
+                          <Pagination.Item key={p}>
+                            <Pagination.Link
+                              isActive={p === currentPage}
+                              onPress={() => setCurrentPage(p)}
+                              className={`rounded-none transition-all border flex items-center justify-center w-9 h-9 ${
+                                p === currentPage
+                                  ? "bg-[#A3F367]/10 text-[#A3F367] border-[#A3F367]"
+                                  : "bg-white/5 text-zinc-400 border-white/10 hover:border-[#A3F367] hover:text-[#A3F367]"
+                              }`}
+                            >
+                              {p}
+                            </Pagination.Link>
+                          </Pagination.Item>
+                        ),
+                      )}
+
+                      <Pagination.Item>
+                        <Pagination.Next
+                          isDisabled={currentPage === totalPages}
+                          onPress={() => setCurrentPage((p) => p + 1)}
+                          className="rounded-none bg-white/5 border border-white/10 hover:border-[#A3F367] hover:text-[#A3F367] transition-all data-[disabled=true]:opacity-30 data-[disabled=true]:cursor-not-allowed text-zinc-400 flex items-center justify-center px-3"
+                        >
+                          <span className="hidden sm:inline mr-1">Next</span>
+                          <Pagination.NextIcon />
+                        </Pagination.Next>
+                      </Pagination.Item>
+                    </Pagination.Content>
+                  </Pagination>
+                </div>
+              )}
+            </>
+          )
         )}
       </div>
     </div>

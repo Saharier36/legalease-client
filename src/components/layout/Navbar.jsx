@@ -66,7 +66,7 @@ const Navbar = () => {
               <SearchField.Group className="bg-white/10 border border-white/20 px-3 py-1.5 flex items-center gap-2 focus-within:border-[#A3F367] focus-within:ring-1 focus-within:ring-[#A3F367] transition-all rounded-none">
                 <FaMagnifyingGlass className="text-slate-300 shrink-0 text-sm" />
                 <SearchField.Input
-                  placeholder="Search lawyers by name or specialty..."
+                  placeholder="Search lawyers by name..."
                   className="bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none w-full"
                 />
                 <SearchField.ClearButton className="text-slate-400 hover:text-white text-xs" />
