@@ -4,12 +4,12 @@ import LawyerCard from "@/components/ui/LawyerCard";
 import LawyerCardSkeletonGrid from "@/components/ui/LawyerCardSkeleton";
 import LawyerFilter from "@/components/ui/LawyerFilter";
 import { getLawyers } from "@/services/lawyers/lawyerQueries";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { BiSpreadsheet } from "react-icons/bi";
 import { Pagination } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 
-export default function AllLawyers() {
+function LawyersContent() {
   const searchParams = useSearchParams();
 
   const [lawyers, setLawyers] = useState([]);
@@ -181,5 +181,13 @@ export default function AllLawyers() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AllLawyers() {
+  return (
+    <Suspense>
+      <LawyersContent />
+    </Suspense>
   );
 }
