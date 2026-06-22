@@ -68,12 +68,8 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
         {/* Page Header */}
         <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
-            <div className="flex items-center gap-2 text-[#A3F367] text-xs font-black tracking-widest uppercase mb-1">
-              <MdOutlineGavel size={14} />
-              <span>Lawyer Profile</span>
-            </div>
             <h1 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">
-              Attorney Details
+              Lawyer Details
             </h1>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium max-w-xs">
