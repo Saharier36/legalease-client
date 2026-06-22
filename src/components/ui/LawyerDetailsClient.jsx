@@ -170,25 +170,34 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
 
               <button
                 onClick={() => setIsModalOpen(true)}
-                disabled={!user || hasPaid}
+                disabled={
+                  !user ||
+                  hasPaid ||
+                  user?.role === "lawyer" ||
+                  user?.role === "admin"
+                }
                 className={`w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 text-xs font-black uppercase tracking-widest transition-all duration-200 rounded-none ${
                   !user
                     ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed border border-zinc-200 dark:border-zinc-700"
-                    : hasPaid
-                      ? "bg-[#A3F367]/10 border border-[#A3F367]/30 text-[#6dcf45] cursor-not-allowed"
-                      : isBusy
-                        ? "bg-red-500/10 border border-red-500/30 text-red-400 cursor-not-allowed"
-                        : "bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 cursor-pointer"
+                    : user?.role === "lawyer" || user?.role === "admin"
+                      ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed border border-zinc-200 dark:border-zinc-700"
+                      : hasPaid
+                        ? "bg-[#A3F367]/10 border border-[#A3F367]/30 text-[#6dcf45] cursor-not-allowed"
+                        : isBusy
+                          ? "bg-red-500/10 border border-red-500/30 text-red-400 cursor-not-allowed"
+                          : "bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 cursor-pointer"
                 }`}
               >
                 <MdOutlineGavel size={13} />
                 {!user
                   ? "Login to Hire"
-                  : hasPaid
-                    ? "Already Hired"
-                    : isBusy
-                      ? "Currently Unavailable"
-                      : "Hire This Lawyer"}
+                  : user?.role === "lawyer" || user?.role === "admin"
+                    ? "Not Available for Your Role"
+                    : hasPaid
+                      ? "Already Hired"
+                      : isBusy
+                        ? "Currently Unavailable"
+                        : "Hire This Lawyer"}
               </button>
 
               {!user && (
