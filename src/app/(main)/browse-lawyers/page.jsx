@@ -7,8 +7,11 @@ import { getLawyers } from "@/services/lawyers/lawyerQueries";
 import React, { useEffect, useState } from "react";
 import { BiSpreadsheet } from "react-icons/bi";
 import { Pagination } from "@heroui/react";
+import { useSearchParams } from "next/navigation";
 
 export default function AllLawyers() {
+  const searchParams = useSearchParams();
+
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -17,7 +20,7 @@ export default function AllLawyers() {
   const lawyersPerPage = 12;
 
   const [filters, setFilters] = useState({
-    search: "",
+    search: searchParams.get("search") || "",
     specialization: "",
     sort: "",
   });
@@ -36,7 +39,7 @@ export default function AllLawyers() {
       specialization: "",
       sort: "",
     });
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   useEffect(() => {

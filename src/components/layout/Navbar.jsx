@@ -10,7 +10,7 @@ import {
   AvatarImage,
   AvatarFallback,
   SearchField,
-  Spinner, 
+  Spinner,
 } from "@heroui/react";
 
 import {
@@ -29,6 +29,7 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const { user, isPending } = useUserSession();
 
@@ -36,7 +37,7 @@ const Navbar = () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/login"); // redirect to login page
+          router.push("/login");
         },
       },
     });
@@ -44,6 +45,19 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleSearch = (value) => {
+    setSearchValue(value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === "Enter" && searchValue.trim()) {
+      router.push(
+        `/browse-lawyers?search=${encodeURIComponent(searchValue.trim())}`,
+      );
+      setIsMobileMenuOpen(false);
+    }
   };
 
   return (
@@ -62,12 +76,17 @@ const Navbar = () => {
 
           {/* 🔍 Global Search Bar */}
           <div className="hidden md:block flex-1 max-w-xs lg:max-w-md">
-            <SearchField aria-label="Search lawyers">
+            <SearchField
+              aria-label="Search lawyers"
+              value={searchValue}
+              onChange={handleSearch}
+            >
               <SearchField.Group className="bg-white/10 border border-white/20 px-3 py-1.5 flex items-center gap-2 focus-within:border-[#A3F367] focus-within:ring-1 focus-within:ring-[#A3F367] transition-all rounded-none">
                 <FaMagnifyingGlass className="text-slate-300 shrink-0 text-sm" />
                 <SearchField.Input
                   placeholder="Search lawyers by name..."
                   className="bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none w-full"
+                  onKeyDown={handleSearchSubmit}
                 />
                 <SearchField.ClearButton className="text-slate-400 hover:text-white text-xs" />
               </SearchField.Group>
@@ -80,9 +99,7 @@ const Navbar = () => {
             <NavLink href="/browse-lawyers">Browse Lawyers</NavLink>
 
             {!isPending && user && (
-              <NavLink href={`/dashboard/${user.role}`}>
-                Dashboard
-              </NavLink>
+              <NavLink href={`/dashboard/${user.role}`}>Dashboard</NavLink>
             )}
           </div>
 
@@ -112,10 +129,7 @@ const Navbar = () => {
 
                 <div className="flex flex-col min-w-max max-w-45">
                   <span className="text-xs font-bold text-white truncate">
-                    Hi,{" "}
-                    {user.name
-                      ? user.name.split(" ")[0]
-                      : "User"}
+                    Hi, {user.name ? user.name.split(" ")[0] : "User"}
                   </span>
                 </div>
 
@@ -171,12 +185,17 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-[#07301E] border-t border-white/10 px-4 pt-4 pb-6 space-y-4 shadow-inner animate-in fade-in slide-in-from-top duration-200">
           <div className="block md:hidden pb-2">
-            <SearchField aria-label="Search lawyers">
+            <SearchField
+              aria-label="Search lawyers"
+              value={searchValue}
+              onChange={handleSearch}
+            >
               <SearchField.Group className="bg-white/10 border border-white/20 px-3 py-2 flex items-center gap-2 rounded-none">
                 <FaMagnifyingGlass className="text-slate-300 shrink-0 text-sm" />
                 <SearchField.Input
                   placeholder="Search lawyers..."
                   className="bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none w-full"
+                  onKeyDown={handleSearchSubmit}
                 />
               </SearchField.Group>
             </SearchField>
@@ -221,10 +240,7 @@ const Navbar = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl">
                   <AvatarRoot size="sm">
-                    <AvatarImage
-                      src={user.image}
-                      alt={user.name}
-                    />
+                    <AvatarImage src={user.image} alt={user.name} />
                     <AvatarFallback className="bg-[#A3F367] text-zinc-950 font-bold">
                       {user.name?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
