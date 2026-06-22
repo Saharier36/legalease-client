@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Card, Avatar } from "@heroui/react";
 import { useUserSession } from "@/core/session-client";
-import { fetchLawyerServices } from "@/services/lawyers/lawyerQueries";
+import { fetchLawyerServices } from "@/services/api";
 import EditServiceModal from "./EditServiceModal";
 import DeleteServiceModal from "./DeleteServiceModal";
 

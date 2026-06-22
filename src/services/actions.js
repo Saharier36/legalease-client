@@ -1,3 +1,4 @@
+"use server";
 import { serverDelete, serverMutation, serverUpdate } from "@/core/apiClient";
 
 export const createLawyerService = async (data) => {
@@ -10,4 +11,12 @@ export const updateLawyerService = async (id, data) => {
 
 export const deleteLawyerService = async (id) => {
   return await serverDelete(`/api/lawyer/services/${id}`);
+};
+
+export const saveHiring = async (data) => {
+  return await serverMutation("/api/hirings", data);
+};
+
+export const saveComment = async (data) => {
+  return await serverMutation("/api/comments", data);
 };

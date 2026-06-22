@@ -1,9 +1,9 @@
-import { getLawyerById } from "@/services/lawyers/lawyerQueries";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import LawyerDetailsError from "@/components/ui/LawyerDetailsError";
 import LawyerDetailsClient from "@/components/ui/LawyerDetailsClient";
-
+import { checkHiring, getLawyerById } from "@/services/api";
+import { getUserSession } from "@/core/session";
 
 export default async function LawyerDetails({ params }) {
   const { id } = await params;
@@ -21,13 +21,18 @@ export default async function LawyerDetails({ params }) {
   }
 
   // Get session
-  let user = null;
-  try {
-    const session = await auth.api.getSession({ headers: await headers() });
-    user = session?.user || null;
-  } catch (err) {
-    user = null;
+   const user = await getUserSession();
+
+  // hasPaid check
+  let hasPaid = false;
+  if (user) {
+    try {
+      const data = await checkHiring(id, user.id);
+      hasPaid = data.hasPaid || false;
+    } catch (err) {
+      hasPaid = false;
+    }
   }
 
-  return <LawyerDetailsClient lawyer={lawyer} user={user} />;
+  return <LawyerDetailsClient lawyer={lawyer} user={user} hasPaid={hasPaid} />;
 }

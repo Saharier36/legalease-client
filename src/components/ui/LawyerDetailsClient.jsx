@@ -11,8 +11,7 @@ import CommentSection from "./CommentSection";
 import HireModal from "./HireModal";
 import { VscLaw } from "react-icons/vsc";
 
-
-export default function LawyerDetailsClient({ lawyer, user }) {
+export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHiring, setIsHiring] = useState(false);
 
@@ -31,18 +30,26 @@ export default function LawyerDetailsClient({ lawyer, user }) {
   const handleConfirmHire = async () => {
     setIsHiring(true);
     try {
-      // TODO: connect stripe payment + hiring API
-      // await hireLaywer({ lawyerId: lawyer._id, userId: user._id });
-      setIsModalOpen(false);
+      const res = await fetch("/api/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lawyerId: lawyer._id,
+          lawyerName: lawyer.name,
+          fee: lawyer.fee,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
     } catch (err) {
       console.error(err);
     } finally {
       setIsHiring(false);
     }
   };
-
-  // TODO: replace with real check from hirings collection
-  const hasPaid = false;
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8">
@@ -163,21 +170,25 @@ export default function LawyerDetailsClient({ lawyer, user }) {
 
               <button
                 onClick={() => setIsModalOpen(true)}
-                disabled={!user}
+                disabled={!user || hasPaid}
                 className={`w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 text-xs font-black uppercase tracking-widest transition-all duration-200 rounded-none ${
                   !user
                     ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed border border-zinc-200 dark:border-zinc-700"
-                    : isBusy
-                      ? "bg-red-500/10 border border-red-500/30 text-red-400 cursor-not-allowed"
-                      : "bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 cursor-pointer"
+                    : hasPaid
+                      ? "bg-[#A3F367]/10 border border-[#A3F367]/30 text-[#6dcf45] cursor-not-allowed"
+                      : isBusy
+                        ? "bg-red-500/10 border border-red-500/30 text-red-400 cursor-not-allowed"
+                        : "bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 cursor-pointer"
                 }`}
               >
                 <MdOutlineGavel size={13} />
                 {!user
                   ? "Login to Hire"
-                  : isBusy
-                    ? "Currently Unavailable"
-                    : "Hire This Lawyer"}
+                  : hasPaid
+                    ? "Already Hired"
+                    : isBusy
+                      ? "Currently Unavailable"
+                      : "Hire This Lawyer"}
               </button>
 
               {!user && (

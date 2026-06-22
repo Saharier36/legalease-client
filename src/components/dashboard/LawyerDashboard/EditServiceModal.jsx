@@ -24,7 +24,6 @@ import {
   FaShieldAlt,
   FaHome,
   FaSave,
-  FaEdit,
   FaHeartbeat,
   FaUniversity,
   FaBalanceScale,
@@ -32,8 +31,8 @@ import {
 } from "react-icons/fa";
 import { FaFileInvoiceDollar, FaPassport, FaUserTie } from "react-icons/fa6";
 import { uploadImageToImgBB } from "@/utils/uploadImage";
-import { updateLawyerService } from "@/services/lawyers/lawyerMutations";
 import { MdModeEdit } from "react-icons/md";
+import { updateLawyerService } from "@/services/actions";
 
 const STATIC_CATEGORIES = [
   {

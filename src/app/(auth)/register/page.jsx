@@ -53,6 +53,7 @@ export default function RegisterPage() {
       name: dataEntries.name,
       image: uploadedImageUrl,
       role: selectedRole,
+      plan: "free",
     });
 
     setIsUploading(false);

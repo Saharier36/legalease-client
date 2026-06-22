@@ -3,11 +3,11 @@
 import LawyerCard from "@/components/ui/LawyerCard";
 import LawyerCardSkeletonGrid from "@/components/ui/LawyerCardSkeleton";
 import LawyerFilter from "@/components/ui/LawyerFilter";
-import { getLawyers } from "@/services/lawyers/lawyerQueries";
 import React, { useEffect, useState, Suspense } from "react";
 import { BiSpreadsheet } from "react-icons/bi";
 import { Pagination } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
+import { getLawyers } from "@/services/api";
 
 function LawyersContent() {
   const searchParams = useSearchParams();

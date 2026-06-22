@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getLawyers } from "@/services/lawyers/lawyerQueries";
 import LawyerCard from "@/components/ui/LawyerCard";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { MdOutlineGavel } from "react-icons/md";
+import { getLawyers } from "@/services/api";
 
 export default function FeaturedLawyers() {
   const [lawyers, setLawyers] = useState([]);

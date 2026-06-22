@@ -34,8 +34,8 @@ import {
 import { toast } from "sonner";
 import { uploadImageToImgBB } from "@/utils/uploadImage";
 import { useUserSession } from "@/core/session-client";
-import { createLawyerService } from "@/services/lawyers/lawyerMutations";
 import { FaFileInvoiceDollar, FaPassport, FaUserTie } from "react-icons/fa6";
+import { createLawyerService } from "@/services/actions";
 
 const STATIC_CATEGORIES = [
   {

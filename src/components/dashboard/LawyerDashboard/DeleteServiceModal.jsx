@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { AlertDialog, Button, Spinner } from "@heroui/react";
 import { FaTrash, FaExclamationTriangle, FaTimes } from "react-icons/fa";
 import { toast } from "sonner";
-import { deleteLawyerService } from "@/services/lawyers/lawyerMutations";
+import { deleteLawyerService } from "@/services/actions";
 
 export default function DeleteServiceModal({ service, onRefresh }) {
   const [isDeleting, setIsDeleting] = useState(false);
