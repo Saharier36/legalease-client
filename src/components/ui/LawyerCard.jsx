@@ -48,7 +48,7 @@ export default function LawyerCard({ lawyer, index }) {
       variants={itemVariants}
       whileHover={{ y: -6, scale: 1.01 }}
       whileTap={{ scale: 0.99 }}
-      onClick={() => router.push(`/lawyers/${_id}`)}
+      onClick={() => router.push(`/browse-lawyers/${_id}`)}
       className="group relative w-full cursor-pointer border border-zinc-200 bg-white dark:bg-zinc-900 transition-all duration-200 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
     >
       {/* Top accent bar */}

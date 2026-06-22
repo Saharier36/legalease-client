@@ -15,3 +15,8 @@ export const getLawyers = async (filters = {}) => {
   const queryString = queryParams.toString();
   return await serverFetch(`/api/lawyer/services${queryString ? `?${queryString}` : ""}`);
 };
+
+
+export const getLawyerById = async (id) => {
+  return await serverFetch(`/api/lawyer/services/${id}`);
+}
