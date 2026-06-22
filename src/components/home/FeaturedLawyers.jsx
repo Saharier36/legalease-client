@@ -15,7 +15,8 @@ export default function FeaturedLawyers() {
       try {
         const data = await getLawyers({});
         if (data && !data.error) {
-          setLawyers(data.slice(0, 6));
+          const shuffled = [...data].sort(() => Math.random() - 0.5);
+          setLawyers(shuffled.slice(0, 6));
         }
       } catch (err) {
         console.error(err);

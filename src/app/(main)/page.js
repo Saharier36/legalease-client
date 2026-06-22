@@ -11,7 +11,6 @@ import TopExperts from "@/components/home/TopExperts";
 import LegalCategories from "@/components/home/LegalCategories";
 import AboutSection from "@/components/home/AboutSection";
 import CTASection from "@/components/home/CTASection";
-import TopLawyers from "@/components/home/FeaturedLawyers";
 import FeaturedLawyers from "@/components/home/FeaturedLawyers";
 
 export default function Home() {
