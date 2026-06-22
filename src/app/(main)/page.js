@@ -3,7 +3,6 @@
 import { useState, Suspense } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useUserSession } from "@/core/session-client";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import HeroBanner from "@/components/home/HeroBanner";
 import RoleModal from "@/components/home/RoleModal";
@@ -12,7 +11,8 @@ import TopExperts from "@/components/home/TopExperts";
 import LegalCategories from "@/components/home/LegalCategories";
 import AboutSection from "@/components/home/AboutSection";
 import CTASection from "@/components/home/CTASection";
-import TopLawyers from "@/components/home/TopLawyers";
+import TopLawyers from "@/components/home/FeaturedLawyers";
+import FeaturedLawyers from "@/components/home/FeaturedLawyers";
 
 export default function Home() {
   const { user } = useUserSession();
@@ -63,7 +63,7 @@ export default function Home() {
 
       <HeroBanner />
       <AboutSection />
-      <TopLawyers />
+      <FeaturedLawyers />
       <TopExperts />
       <LegalCategories />
       <CTASection />

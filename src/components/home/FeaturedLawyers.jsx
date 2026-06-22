@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { MdOutlineGavel } from "react-icons/md";
 
-export default function TopLawyers() {
+export default function FeaturedLawyers() {
   const [lawyers, setLawyers] = useState([]);
 
   useEffect(() => {
@@ -35,15 +35,13 @@ export default function TopLawyers() {
               <span>Featured</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">
-              Top Legal Experts
+              Top Lawyers For You
             </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-2 max-w-sm">
-              Handpicked professionals across digital compliance, asset
-              protection, and corporate law.
+              Browse our verified legal professionals and find the right lawyer
+              for your needs.
             </p>
           </div>
-
-
         </div>
 
         {/* Grid */}
