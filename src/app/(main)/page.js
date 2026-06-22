@@ -12,6 +12,7 @@ import TopExperts from "@/components/home/TopExperts";
 import LegalCategories from "@/components/home/LegalCategories";
 import AboutSection from "@/components/home/AboutSection";
 import CTASection from "@/components/home/CTASection";
+import TopLawyers from "@/components/home/TopLawyers";
 
 export default function Home() {
   const { user } = useUserSession();
@@ -62,6 +63,7 @@ export default function Home() {
 
       <HeroBanner />
       <AboutSection />
+      <TopLawyers />
       <TopExperts />
       <LegalCategories />
       <CTASection />
