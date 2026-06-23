@@ -120,9 +120,7 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
                   <h1 className="text-xl md:text-2xl font-black uppercase tracking-tight text-zinc-900 dark:text-white">
                     {lawyer.name}
                   </h1>
-                  <MdVerified
-                    className={`shrink-0 text-lg ${isBusy ? "text-red-400" : "text-[#A3F367]"}`}
-                  />
+                  <MdVerified className="shrink-0 text-lg text-[#A3F367]" />
                 </div>
               </div>
 

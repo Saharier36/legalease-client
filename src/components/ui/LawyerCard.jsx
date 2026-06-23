@@ -106,11 +106,7 @@ export default function LawyerCard({ lawyer, index }) {
             <h3 className="truncate text-[15px] font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
               {name}
             </h3>
-            <MdVerified
-              className={`shrink-0 text-[16px] ${
-                isBusy ? "text-red-400" : "text-[#A3F367]"
-              }`}
-            />
+            <MdVerified className="shrink-0 text-[16px] text-[#A3F367]" />
           </div>
 
           {/* Specialization */}
