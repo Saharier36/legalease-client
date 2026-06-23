@@ -25,8 +25,15 @@ export const getLawyerById = async (id) => {
   return await serverFetch(`/api/lawyer/services/${id}`);
 };
 
-export const checkHiring = async (lawyerId, userId) => {
+export const checkHiring = async (lawyerServiceId, userId) => {
   return await serverFetch(
-    `/api/hirings/check?lawyerId=${lawyerId}&userId=${userId}`,
+    `/api/hirings/check?lawyerServiceId=${lawyerServiceId}&userId=${userId}`,
   );
+};
+
+export const getHirings = async (filters = {}) => {
+  const params = new URLSearchParams();
+  if (filters.lawyerId) params.append("lawyerId", filters.lawyerId);
+  if (filters.userId) params.append("userId", filters.userId);
+  return await serverFetch(`/api/hirings?${params.toString()}`);
 };

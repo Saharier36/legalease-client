@@ -1,5 +1,3 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import LawyerDetailsError from "@/components/ui/LawyerDetailsError";
 import LawyerDetailsClient from "@/components/ui/LawyerDetailsClient";
 import { checkHiring, getLawyerById } from "@/services/api";
@@ -21,13 +19,13 @@ export default async function LawyerDetails({ params }) {
   }
 
   // Get session
-   const user = await getUserSession();
-
+  const user = await getUserSession();
+  
   // hasPaid check
   let hasPaid = false;
   if (user) {
     try {
-      const data = await checkHiring(id, user.id);
+      const data = await checkHiring(lawyer._id, user.id);
       hasPaid = data.hasPaid || false;
     } catch (err) {
       hasPaid = false;

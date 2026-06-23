@@ -20,3 +20,7 @@ export const saveHiring = async (data) => {
 export const saveComment = async (data) => {
   return await serverMutation("/api/comments", data);
 };
+
+export const updateHiringStatus = async (id, status, lawyerId) => {
+  return await serverUpdate(`/api/hirings/${id}/status`, { status, lawyerId });
+};

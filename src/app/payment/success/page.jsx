@@ -6,7 +6,7 @@ import { getUserSession } from "@/core/session";
 import { saveHiring } from "@/services/actions";
 
 export default async function PaymentSuccess({ searchParams }) {
-  const { session_id, lawyerId } = await searchParams;
+  const { session_id, lawyerServiceId, lawyerUserId } = await searchParams;
 
   let session = null;
   try {
@@ -17,9 +17,11 @@ export default async function PaymentSuccess({ searchParams }) {
 
   const user = await getUserSession();
 
-  if (session?.payment_status === "paid" && user && lawyerId) {
+  if (session?.payment_status === "paid" && user && lawyerUserId) {
     await saveHiring({
-      lawyerId,
+      lawyerId: lawyerUserId,
+      lawyerServiceId: lawyerServiceId,
+      specialization: session.metadata?.specialization,
       userId: user.id,
       userEmail: user.email,
       userName: user.name,
@@ -64,8 +66,8 @@ export default async function PaymentSuccess({ searchParams }) {
           )}
 
           <div className="flex flex-col gap-2 w-full">
-            {lawyerId && (
-              <Link href={`/browse-lawyers/${lawyerId}`}>
+            {lawyerServiceId && (
+              <Link href={`/browse-lawyers/${lawyerServiceId}`}>
                 <button className="group w-full flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 px-4 py-2.5 text-xs font-black uppercase tracking-widest text-zinc-600 dark:text-zinc-400 hover:border-[#A3F367] hover:text-[#A3F367] transition-all duration-200 rounded-none">
                   Back to Lawyer Profile
                   <FaArrowRight

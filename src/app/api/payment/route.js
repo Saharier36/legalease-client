@@ -6,7 +6,8 @@ export async function POST(req) {
   try {
     const headersList = await headers();
     const origin = headersList.get("origin");
-    const { lawyerId, lawyerName, fee } = await req.json();
+    const { lawyerId, lawyerName, fee, lawyerUserId, lawyerSpecialization } =
+      await req.json();
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -22,8 +23,12 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}&lawyerId=${lawyerId}`,
-      cancel_url: `${origin}/lawyers/${lawyerId}`,
+      metadata: {
+        specialization: lawyerSpecialization,
+        lawyerServiceId: lawyerId,
+      },
+      success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}&lawyerServiceId=${lawyerId}&lawyerUserId=${lawyerUserId}`,
+      cancel_url: `${origin}/browse-lawyers/${lawyerId}`,
     });
 
     return NextResponse.json({ url: session.url });

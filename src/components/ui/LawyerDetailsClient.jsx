@@ -37,6 +37,8 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
           lawyerId: lawyer._id,
           lawyerName: lawyer.name,
           fee: lawyer.fee,
+          lawyerUserId: lawyer.lawyerId,
+          lawyerSpecialization: lawyer.specialization,
         }),
       });
 
@@ -46,6 +48,7 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
       }
     } catch (err) {
       console.error(err);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setIsHiring(false);
     }
