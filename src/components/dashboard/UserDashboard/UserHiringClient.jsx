@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Chip } from "@heroui/react";
 import { FaCreditCard } from "react-icons/fa6";
@@ -12,8 +12,13 @@ const statusStyles = {
 };
 
 export default function UserHiringClient({ hirings }) {
-
   const [payingId, setPayingId] = useState(null);
+  const [redirectUrl, setRedirectUrl] = useState(null);
+
+  useEffect(() => {
+    if (!redirectUrl) return;
+    window.location.assign(redirectUrl);
+  }, [redirectUrl]);
 
   const handlePay = async (hiring) => {
     setPayingId(hiring._id);
@@ -33,14 +38,15 @@ export default function UserHiringClient({ hirings }) {
       const data = await res.json();
 
       if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        toast.error(data?.error || "Failed to start payment.");
+        setRedirectUrl(data.url);
+        return;
       }
+
+      toast.error(data?.error || "Failed to start payment.");
+      setPayingId(null);
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please try again.");
-    } finally {
       setPayingId(null);
     }
   };

@@ -1,5 +1,10 @@
 "use server";
-import { serverDelete, serverMutation, serverUpdate } from "@/core/apiClient";
+import {
+  serverDelete,
+  serverFetch,
+  serverMutation,
+  serverUpdate,
+} from "@/core/apiClient";
 
 export const createLawyerService = async (data) => {
   return await serverMutation("/api/lawyer/services", data);
@@ -11,6 +16,14 @@ export const updateLawyerService = async (id, data) => {
 
 export const deleteLawyerService = async (id) => {
   return await serverDelete(`/api/lawyer/services/${id}`);
+};
+
+export const getMyLawyerServices = async (lawyerId) => {
+  if (!lawyerId) return [];
+  const result = await serverFetch(
+    `/api/lawyer/services?lawyerId=${lawyerId}`,
+  );
+  return Array.isArray(result) ? result : [];
 };
 
 export const saveHiring = async (data) => {

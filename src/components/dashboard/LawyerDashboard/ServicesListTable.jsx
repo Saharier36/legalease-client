@@ -1,30 +1,38 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Table, Card, Avatar } from "@heroui/react";
-import { useUserSession } from "@/core/session-client";
-import { fetchLawyerServices } from "@/services/api";
+import { getMyLawyerServices } from "@/services/actions";
 import EditServiceModal from "./EditServiceModal";
 import DeleteServiceModal from "./DeleteServiceModal";
 
-export default function ServicesListTable({ refreshKey = 0 }) {
-  const { user } = useUserSession();
-  const [services, setServices] = useState([]);
-
-  const currentLawyerId = user?.id;
-
+export default function ServicesListTable({
+  initialServices = [],
+  lawyerId,
+  refreshKey = 0,
+}) {
+  const [services, setServices] = useState(initialServices);
   const [refreshTick, setRefreshTick] = useState(0);
 
   useEffect(() => {
-    if (!currentLawyerId) return;
+    setServices(initialServices);
+  }, [initialServices]);
+
+  useEffect(() => {
+    if (!lawyerId) return;
+
     let cancelled = false;
-    fetchLawyerServices(currentLawyerId)
+
+    getMyLawyerServices(lawyerId)
       .then((result) => {
-        if (!cancelled && Array.isArray(result)) setServices(result);
+        if (!cancelled) setServices(result);
       })
       .catch((err) => console.error("Error fetching services:", err));
-    return () => { cancelled = true; };
-  }, [currentLawyerId, refreshKey, refreshTick]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lawyerId, refreshKey, refreshTick]);
 
   return (
     <Card className="bg-transparent border border-zinc-200 dark:border-zinc-800 rounded-none p-4 md:p-6 shadow-sm">

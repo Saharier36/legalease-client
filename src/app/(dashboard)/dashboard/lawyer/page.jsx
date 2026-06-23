@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Chip, Button } from "@heroui/react";
 import { useUserSession } from "@/core/session-client";
-import { fetchLawyerServices } from "@/services/api";
+import { getMyLawyerServices } from "@/services/actions";
 import {
   FaBriefcase,
   FaDollarSign,
@@ -33,22 +33,21 @@ const revenueData = [
 ];
 
 export default function LawyerDashboard() {
-  const { user } = useUserSession();
+  const { user, isPending } = useUserSession();
   const [services, setServices] = useState([]);
   const [isServicesLoading, setIsServicesLoading] = useState(true);
 
   const currentLawyerId = user?.id;
 
   useEffect(() => {
-    if (!currentLawyerId) return;
+    if (isPending || !currentLawyerId) return;
 
-    fetchLawyerServices(currentLawyerId)
-      .then((result) => {
-        if (Array.isArray(result)) setServices(result);
-      })
+    setIsServicesLoading(true);
+    getMyLawyerServices(currentLawyerId)
+      .then((result) => setServices(result))
       .catch((err) => console.error("Error fetching services:", err))
       .finally(() => setIsServicesLoading(false));
-  }, [currentLawyerId]);
+  }, [isPending, currentLawyerId]);
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-6 text-foreground">

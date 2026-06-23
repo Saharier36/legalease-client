@@ -1,8 +1,13 @@
 import { serverFetch } from "@/core/apiClient";
 
-export const fetchLawyerServices = async (lawyerId, status = "Available") => {
+export const fetchLawyerServices = async (lawyerId, status) => {
+  const params = new URLSearchParams();
+  if (lawyerId) params.append("lawyerId", lawyerId);
+  if (status) params.append("status", status);
+
+  const queryString = params.toString();
   return await serverFetch(
-    `/api/lawyer/services?lawyerId=${lawyerId}&status=${status}`,
+    `/api/lawyer/services${queryString ? `?${queryString}` : ""}`,
   );
 };
 
