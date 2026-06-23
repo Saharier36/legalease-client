@@ -21,16 +21,17 @@ export default async function LawyerDetails({ params }) {
   // Get session
   const user = await getUserSession();
   
-  // hasPaid check
-  let hasPaid = false;
+  let hasHired = false;
   if (user) {
     try {
       const data = await checkHiring(lawyer._id, user.id);
-      hasPaid = data.hasPaid || false;
+      hasHired = data.hasHired || false;
     } catch (err) {
-      hasPaid = false;
+      hasHired = false;
     }
   }
 
-  return <LawyerDetailsClient lawyer={lawyer} user={user} hasPaid={hasPaid} />;
+  return (
+    <LawyerDetailsClient lawyer={lawyer} user={user} hasHired={hasHired} />
+  );
 }

@@ -1,0 +1,159 @@
+"use client";
+
+import { useState } from "react";
+import { toast } from "sonner";
+import { Chip } from "@heroui/react";
+import { FaCreditCard } from "react-icons/fa6";
+
+const statusStyles = {
+  pending: "border-yellow-500/40 bg-yellow-500/10 text-yellow-500",
+  accepted: "border-[#A3F367]/40 bg-[#A3F367]/10 text-[#6dcf45]",
+  rejected: "border-red-500/40 bg-red-500/10 text-red-400",
+};
+
+export default function UserHiringClient({ hirings }) {
+
+  const [payingId, setPayingId] = useState(null);
+
+  const handlePay = async (hiring) => {
+    setPayingId(hiring._id);
+    try {
+      const res = await fetch("/api/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          hiringId: hiring._id,
+          lawyerServiceId: hiring.lawyerServiceId,
+          lawyerName: hiring.lawyerName || "Lawyer",
+          fee: hiring.amount,
+          lawyerSpecialization: hiring.specialization,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        toast.error(data?.error || "Failed to start payment.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setPayingId(null);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5 mb-8">
+          <h1 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">
+            Hiring History
+          </h1>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+            Track your hiring requests and complete payment for accepted
+            lawyers.
+          </p>
+        </div>
+
+        {hirings.length === 0 ? (
+          <div className="text-center py-16 border border-dashed border-zinc-300 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/10">
+            <p className="text-sm font-black text-zinc-400 uppercase tracking-widest">
+              No Hiring Requests Yet
+            </p>
+          </div>
+        ) : (
+          <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+            <div className="h-1 w-full bg-[#A3F367]" />
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-100 dark:border-zinc-800">
+                    <th className="text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                      Lawyer
+                    </th>
+                    <th className="text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                      Specialization
+                    </th>
+                    <th className="text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                      Fee
+                    </th>
+                    <th className="text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                      Date
+                    </th>
+                    <th className="text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                      Status
+                    </th>
+                    <th className="text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                      Payment
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hirings.map((h) => {
+                    const canPay =
+                      h.status === "accepted" && h.paymentStatus !== "paid";
+                    const isPaid = h.paymentStatus === "paid";
+
+                    return (
+                      <tr
+                        key={h._id}
+                        className="border-b border-zinc-100 dark:border-zinc-800 last:border-0 hover:bg-zinc-50 dark:hover:bg-zinc-950 transition-colors"
+                      >
+                        <td className="px-6 py-4 font-semibold text-zinc-900 dark:text-white text-xs">
+                          {h.lawyerName || "—"}
+                        </td>
+                        <td className="px-6 py-4 text-zinc-500 dark:text-zinc-400 text-xs">
+                          {h.specialization || "—"}
+                        </td>
+                        <td className="px-6 py-4 text-zinc-900 dark:text-white text-xs font-bold">
+                          ${h.amount}
+                        </td>
+                        <td className="px-6 py-4 text-zinc-500 dark:text-zinc-400 text-xs">
+                          {new Date(h.createdAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </td>
+                        <td className="px-6 py-4">
+                          <Chip
+                            className={`rounded-none text-[10px] font-bold uppercase tracking-wider border px-2 py-0.5 ${statusStyles[h.status] || statusStyles.pending}`}
+                          >
+                            {h.status}
+                          </Chip>
+                        </td>
+                        <td className="px-6 py-4">
+                          {isPaid ? (
+                            <Chip className="rounded-none text-[10px] font-bold uppercase tracking-wider border border-[#A3F367]/40 bg-[#A3F367]/10 text-[#6dcf45] px-2 py-0.5">
+                              Paid
+                            </Chip>
+                          ) : canPay ? (
+                            <button
+                              onClick={() => handlePay(h)}
+                              disabled={payingId === h._id}
+                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 rounded-none transition-all disabled:opacity-40"
+                            >
+                              <FaCreditCard size={9} />
+                              {payingId === h._id ? "Redirecting..." : "Pay"}
+                            </button>
+                          ) : (
+                            <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-bold">
+                              —
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

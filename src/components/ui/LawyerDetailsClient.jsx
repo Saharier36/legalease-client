@@ -10,10 +10,13 @@ import Link from "next/link";
 import CommentSection from "./CommentSection";
 import HireModal from "./HireModal";
 import { VscLaw } from "react-icons/vsc";
+import { toast } from "sonner";
+import { saveHiring } from "@/services/actions";
 
-export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
+export default function LawyerDetailsClient({ lawyer, user, hasHired }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHiring, setIsHiring] = useState(false);
+  const [hired, setHired] = useState(hasHired);
 
   const isBusy =
     lawyer?.status?.toLowerCase() === "busy" ||
@@ -30,21 +33,24 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
   const handleConfirmHire = async () => {
     setIsHiring(true);
     try {
-      const res = await fetch("/api/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          lawyerId: lawyer._id,
-          lawyerName: lawyer.name,
-          fee: lawyer.fee,
-          lawyerUserId: lawyer.lawyerId,
-          lawyerSpecialization: lawyer.specialization,
-        }),
+      const data = await saveHiring({
+        lawyerId: lawyer.lawyerId,
+        lawyerServiceId: lawyer._id,
+        lawyerName: lawyer.name,
+        userId: user.id,
+        userEmail: user.email,
+        userName: user.name,
+        amount: lawyer.fee,
+        specialization: lawyer.specialization,
       });
 
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
+      if (data?.success) {
+        setHired(true);
+        setIsModalOpen(false);
+        toast.success("Hiring request sent! Wait for the lawyer to accept.");
+      } else {
+        toast.error(data?.message || "Failed to send hiring request.");
+        setIsModalOpen(false);
       }
     } catch (err) {
       console.error(err);
@@ -169,7 +175,7 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
                 onClick={() => setIsModalOpen(true)}
                 disabled={
                   !user ||
-                  hasPaid ||
+                  hired ||
                   user?.role === "lawyer" ||
                   user?.role === "admin"
                 }
@@ -178,7 +184,7 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
                     ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed border border-zinc-200 dark:border-zinc-700"
                     : user?.role === "lawyer" || user?.role === "admin"
                       ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed border border-zinc-200 dark:border-zinc-700"
-                      : hasPaid
+                      : hired
                         ? "bg-[#A3F367]/10 border border-[#A3F367]/30 text-[#6dcf45] cursor-not-allowed"
                         : isBusy
                           ? "bg-red-500/10 border border-red-500/30 text-red-400 cursor-not-allowed"
@@ -190,7 +196,7 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
                   ? "Login to Hire"
                   : user?.role === "lawyer" || user?.role === "admin"
                     ? "Not Available for Your Role"
-                    : hasPaid
+                    : hired
                       ? "Already Hired"
                       : isBusy
                         ? "Currently Unavailable"
@@ -227,7 +233,7 @@ export default function LawyerDetailsClient({ lawyer, user, hasPaid }) {
         </div>
 
         {/* Comment section */}
-        <CommentSection lawyerId={lawyer._id} hasPaid={hasPaid} user={user} />
+        <CommentSection lawyerId={lawyer._id} hasHired={hired} user={user} />
       </div>
 
       {/* Hire Modal */}

@@ -37,3 +37,7 @@ export const getHirings = async (filters = {}) => {
   if (filters.userId) params.append("userId", filters.userId);
   return await serverFetch(`/api/hirings?${params.toString()}`);
 };
+
+export const getHiringById = async (id) => {
+  return await serverFetch(`/api/hirings/${id}`);
+};

@@ -10,7 +10,7 @@ import { toast } from "sonner";
 const MAX_CHARS = 200;
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function CommentSection({ lawyerId, hasPaid, user }) {
+export default function CommentSection({ lawyerId, hasHired, user }) {
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -90,7 +90,7 @@ export default function CommentSection({ lawyerId, hasPaid, user }) {
           </div>
         )}
 
-        {user && !hasPaid && (
+        {user && !hasHired && (
           <div className="border border-dashed border-zinc-300 dark:border-zinc-700 p-6 text-center">
             <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
               Only clients who have hired this lawyer can leave a review
@@ -98,7 +98,7 @@ export default function CommentSection({ lawyerId, hasPaid, user }) {
           </div>
         )}
 
-        {user && hasPaid && (
+        {user && hasHired && (
           <>
             {submitted ? (
               <div className="border border-[#A3F367]/30 bg-[#A3F367]/5 p-4">

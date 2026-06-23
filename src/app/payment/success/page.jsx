@@ -2,11 +2,10 @@ import { stripe } from "@/lib/stripe";
 import Link from "next/link";
 import { MdOutlineGavel } from "react-icons/md";
 import { FaArrowRight, FaCircleCheck } from "react-icons/fa6";
-import { getUserSession } from "@/core/session";
-import { saveHiring } from "@/services/actions";
+import { updateHiringPayment } from "@/services/actions";
 
 export default async function PaymentSuccess({ searchParams }) {
-  const { session_id, lawyerServiceId, lawyerUserId } = await searchParams;
+  const { session_id, hiringId } = await searchParams;
 
   let session = null;
   try {
@@ -15,19 +14,12 @@ export default async function PaymentSuccess({ searchParams }) {
     console.error("Stripe session error:", err);
   }
 
-  const user = await getUserSession();
-
-  if (session?.payment_status === "paid" && user && lawyerUserId) {
-    await saveHiring({
-      lawyerId: lawyerUserId,
-      lawyerServiceId: lawyerServiceId,
-      specialization: session.metadata?.specialization,
-      userId: user.id,
-      userEmail: user.email,
-      userName: user.name,
-      stripeSessionId: session_id,
-      amount: session.amount_total / 100,
-    });
+  if (session?.payment_status === "paid" && hiringId) {
+    await updateHiringPayment(
+      hiringId,
+      session_id,
+      session.amount_total / 100,
+    );
   }
 
   return (
@@ -46,11 +38,10 @@ export default async function PaymentSuccess({ searchParams }) {
               <span>Payment Confirmed</span>
             </div>
             <h1 className="text-xl font-black uppercase tracking-tight text-zinc-900 dark:text-white">
-              Hiring Request Sent
+              Payment Successful
             </h1>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
-              Your payment was successful. The lawyer will be notified and will
-              reach out to you shortly.
+              Your payment was successful. Your hiring is now confirmed.
             </p>
           </div>
 
@@ -66,17 +57,15 @@ export default async function PaymentSuccess({ searchParams }) {
           )}
 
           <div className="flex flex-col gap-2 w-full">
-            {lawyerServiceId && (
-              <Link href={`/browse-lawyers/${lawyerServiceId}`}>
-                <button className="group w-full flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 px-4 py-2.5 text-xs font-black uppercase tracking-widest text-zinc-600 dark:text-zinc-400 hover:border-[#A3F367] hover:text-[#A3F367] transition-all duration-200 rounded-none">
-                  Back to Lawyer Profile
-                  <FaArrowRight
-                    size={10}
-                    className="group-hover:translate-x-0.5 transition-transform duration-200"
-                  />
-                </button>
-              </Link>
-            )}
+            <Link href="/dashboard/user/hiring-history">
+              <button className="group w-full flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 px-4 py-2.5 text-xs font-black uppercase tracking-widest text-zinc-600 dark:text-zinc-400 hover:border-[#A3F367] hover:text-[#A3F367] transition-all duration-200 rounded-none">
+                View My Hirings
+                <FaArrowRight
+                  size={10}
+                  className="group-hover:translate-x-0.5 transition-transform duration-200"
+                />
+              </button>
+            </Link>
             <Link href="/browse-lawyers">
               <button className="w-full bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 font-black text-xs uppercase tracking-widest px-4 py-2.5 transition-all duration-200 rounded-none">
                 Browse More Lawyers

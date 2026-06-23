@@ -6,8 +6,15 @@ export async function POST(req) {
   try {
     const headersList = await headers();
     const origin = headersList.get("origin");
-    const { lawyerId, lawyerName, fee, lawyerUserId, lawyerSpecialization } =
+    const { hiringId, lawyerServiceId, lawyerName, fee, lawyerSpecialization } =
       await req.json();
+
+    if (!hiringId || !lawyerServiceId || !fee) {
+      return NextResponse.json(
+        { error: "Missing required payment fields." },
+        { status: 400 },
+      );
+    }
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -25,10 +32,11 @@ export async function POST(req) {
       mode: "payment",
       metadata: {
         specialization: lawyerSpecialization,
-        lawyerServiceId: lawyerId,
+        lawyerServiceId,
+        hiringId,
       },
-      success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}&lawyerServiceId=${lawyerId}&lawyerUserId=${lawyerUserId}`,
-      cancel_url: `${origin}/browse-lawyers/${lawyerId}`,
+      success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}&hiringId=${hiringId}&lawyerServiceId=${lawyerServiceId}`,
+      cancel_url: `${origin}/dashboard/user/hiring-history`,
     });
 
     return NextResponse.json({ url: session.url });
