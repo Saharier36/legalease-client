@@ -9,7 +9,7 @@ import {
   FaTimesCircle,
   FaCrown,
 } from "react-icons/fa";
-import { MdOutlineGavel, MdVerified } from "react-icons/md";
+import { MdVerified } from "react-icons/md";
 import { FaCalendarDays } from "react-icons/fa6";
 import {
   BarChart,
