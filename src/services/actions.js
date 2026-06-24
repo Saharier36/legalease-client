@@ -20,9 +20,7 @@ export const deleteLawyerService = async (id) => {
 
 export const getMyLawyerServices = async (lawyerId) => {
   if (!lawyerId) return [];
-  const result = await serverFetch(
-    `/api/lawyer/services?lawyerId=${lawyerId}`,
-  );
+  const result = await serverFetch(`/api/lawyer/services?lawyerId=${lawyerId}`);
   return Array.isArray(result) ? result : [];
 };
 
@@ -51,4 +49,12 @@ export const updateComment = async (id, text, userId) => {
 
 export const deleteComment = async (id, userId) => {
   return await serverDelete(`/api/comments/${id}?userId=${userId}`);
+};
+
+export const updateUserRole = async (id, role) => {
+  return await serverUpdate(`/api/users/${id}/role`, { role });
+};
+
+export const deleteUser = async (id) => {
+  return await serverDelete(`/api/users/${id}`);
 };
