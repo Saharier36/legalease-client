@@ -18,7 +18,7 @@ import {
   FaUserAlt,
 } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
-import EditProfileModal from "@/components/dashboard/LawyerDashboard/EditProfileModal";
+import EditProfileModal from "@/components/ui/EditProfileModal";
 
 export default function GeneralProfileDashboard() {
   const { user } = useUserSession();

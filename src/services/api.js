@@ -45,4 +45,8 @@ export const getHirings = async (filters = {}) => {
 
 export const getHiringById = async (id) => {
   return await serverFetch(`/api/hirings/${id}`);
-};
+};
+
+export const getUserComments = async (userId) => {
+  return await serverFetch(`/api/comments/user?userId=${userId}`);
+};

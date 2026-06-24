@@ -44,3 +44,11 @@ export const updateHiringPayment = async (id, stripeSessionId, amount) => {
     amount,
   });
 };
+
+export const updateComment = async (id, text, userId) => {
+  return await serverUpdate(`/api/comments/${id}`, { text, userId });
+};
+
+export const deleteComment = async (id, userId) => {
+  return await serverDelete(`/api/comments/${id}?userId=${userId}`);
+};

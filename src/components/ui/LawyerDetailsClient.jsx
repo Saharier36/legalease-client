@@ -61,7 +61,7 @@ export default function LawyerDetailsClient({ lawyer, user, hasHired }) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-5">
         {/* Back link */}
         <Link href="/browse-lawyers">

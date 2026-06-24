@@ -43,7 +43,7 @@ export default function LawyerHiringClient({ hirings: initial, lawyerId }) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5 mb-8">
           <h1 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">
