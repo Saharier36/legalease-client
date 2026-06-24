@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Chip } from "@heroui/react";
+import { Chip, Spinner } from "@heroui/react";
 import { FaCreditCard } from "react-icons/fa6";
 
 const statusStyles = {
@@ -140,10 +140,14 @@ export default function UserHiringClient({ hirings }) {
                             <button
                               onClick={() => handlePay(h)}
                               disabled={payingId === h._id}
-                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 rounded-none transition-all disabled:opacity-40"
+                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 rounded-none transition-all disabled:opacity-40 cursor-pointer"
                             >
                               <FaCreditCard size={9} />
-                              {payingId === h._id ? "Redirecting..." : "Pay"}
+                              {payingId === h._id ? (
+                                <Spinner size="sm" color="current" />
+                              ) : (
+                                "Pay"
+                              )}
                             </button>
                           ) : (
                             <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-bold">

@@ -51,6 +51,18 @@ export default function LawyerDashboard() {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-6 text-foreground">
+      <div>
+        <p className="text-[10px] font-black uppercase tracking-widest text-[#A3F367] mb-1">
+          Welcome back
+        </p>
+        <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-900 dark:text-white">
+          {user?.name || "Lawyer"}
+        </h1>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1">
+          Manage your legal services, accept or decline client hiring requests,
+          and track your premium practice analytics — all from one dashboard.
+        </p>
+      </div>
       <div className="relative border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-4 md:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#A3F367]" />
         <div className="flex items-start gap-3">

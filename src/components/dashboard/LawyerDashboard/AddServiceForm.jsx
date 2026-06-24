@@ -328,7 +328,7 @@ export default function AddServiceForm({ onPublish }) {
                 />
                 <label
                   htmlFor="file-upload"
-                  className="text-xs font-semibold px-3 py-1 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-none cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors shrink-0"
+                  className="text-xs text-zinc-950 font-semibold px-3 py-1 bg-[#A3F367] rounded-none cursor-pointer hover:bg-[#b5fa82] transition-colors shrink-0"
                 >
                   Choose Image
                 </label>
@@ -379,7 +379,7 @@ export default function AddServiceForm({ onPublish }) {
             <Button
               type="submit"
               isDisabled={isUploading}
-              className="bg-success text-zinc-950 font-bold px-6 py-2 rounded-none hover:bg-success/90 flex items-center justify-center gap-2 transition-all text-sm h-9 relative"
+              className="bg-[#A3F367] text-zinc-950 font-bold px-6 py-2 rounded-none hover:bg-[#b5fa82] flex items-center justify-center gap-2 transition-all text-sm h-9 relative"
             >
               {isUploading && (
                 <div className="absolute inset-0 flex items-center justify-center">

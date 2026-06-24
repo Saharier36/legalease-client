@@ -129,7 +129,7 @@ export default function LawyerHiringClient({ hirings: initial, lawyerId }) {
                             <button
                               onClick={() => handleAction(h._id, "accepted")}
                               disabled={loadingId === h._id}
-                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 rounded-none transition-all disabled:opacity-40"
+                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider bg-[#A3F367] hover:bg-[#b5fa82] text-zinc-950 rounded-none transition-all disabled:opacity-40 cursor-pointer"
                             >
                               <FaCheck size={9} />
                               Accept
@@ -137,7 +137,7 @@ export default function LawyerHiringClient({ hirings: initial, lawyerId }) {
                             <button
                               onClick={() => handleAction(h._id, "rejected")}
                               disabled={loadingId === h._id}
-                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 rounded-none transition-all disabled:opacity-40"
+                              className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 rounded-none transition-all disabled:opacity-40 cursor-pointer"
                             >
                               <FaXmark size={9} />
                               Reject

@@ -174,7 +174,7 @@ export default function EditServiceModal({ service, onRefresh }) {
       <Modal>
         <Button
           size="sm"
-          className="bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 p-2.5 min-w-0 rounded-full h-8 w-8 flex items-center justify-center transition-colors"
+          className="bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 p-2.5 min-w-0 rounded-none h-8 w-8 flex items-center justify-center transition-colors"
           title="Edit Service"
         >
           <MdModeEdit className="text-xs text-zinc-800 dark:text-zinc-200" />
