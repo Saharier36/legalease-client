@@ -7,20 +7,28 @@ import { updateHiringPayment } from "@/services/actions";
 export default async function PaymentSuccess({ searchParams }) {
   const { session_id, hiringId } = await searchParams;
 
-  let session = null;
-  try {
-    session = await stripe.checkout.sessions.retrieve(session_id);
-  } catch (err) {
-    console.error("Stripe session error:", err);
-  }
+ let session = null;
+ let paymentIntentId = null;
+ try {
+   session = await stripe.checkout.sessions.retrieve(session_id, {
+     expand: ["payment_intent"],
+   });
+   paymentIntentId =
+     typeof session.payment_intent === "object"
+       ? session.payment_intent?.id
+       : session.payment_intent;
+ } catch (err) {
+   console.error("Stripe session error:", err);
+ }
 
-  if (session?.payment_status === "paid" && hiringId) {
-    await updateHiringPayment(
-      hiringId,
-      session_id,
-      session.amount_total / 100,
-    );
-  }
+ if (session?.payment_status === "paid" && hiringId) {
+   await updateHiringPayment(
+     hiringId,
+     session_id,
+     session.amount_total / 100,
+     paymentIntentId,
+   );
+ }
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center px-4">

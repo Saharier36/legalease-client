@@ -54,3 +54,7 @@ export const getUserComments = async (userId) => {
 export const getUsers = async () => {
   return await serverFetch("/api/users");
 };
+
+export const getTransactions = async () => {
+  return await serverFetch("/api/transactions");
+};

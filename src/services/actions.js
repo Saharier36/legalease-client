@@ -36,10 +36,16 @@ export const updateHiringStatus = async (id, status, lawyerId) => {
   return await serverUpdate(`/api/hirings/${id}/status`, { status, lawyerId });
 };
 
-export const updateHiringPayment = async (id, stripeSessionId, amount) => {
+export const updateHiringPayment = async (
+  id,
+  stripeSessionId,
+  amount,
+  paymentIntentId,
+) => {
   return await serverUpdate(`/api/hirings/${id}/payment`, {
     stripeSessionId,
     amount,
+    paymentIntentId,
   });
 };
 

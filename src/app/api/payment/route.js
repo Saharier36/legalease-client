@@ -30,6 +30,12 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
+      payment_intent_data: {
+        metadata: {
+          hiringId,
+          lawyerServiceId,
+        },
+      },
       metadata: {
         specialization: lawyerSpecialization,
         lawyerServiceId,
