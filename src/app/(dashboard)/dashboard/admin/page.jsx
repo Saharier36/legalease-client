@@ -73,7 +73,7 @@ export default function AdminDashboardPage() {
               const Icon = action.icon;
               return (
                 <Link key={i} href={action.href}>
-                  <div className="flex items-center justify-between border border-zinc-100 dark:border-zinc-800 px-4 py-3 bg-zinc-50 dark:bg-zinc-950 hover:border-[#A3F367] transition-all duration-200 cursor-pointer group">
+                  <div className="flex items-center justify-between border border-zinc-100 dark:border-zinc-800 px-4 py-3 hover:border-[#A3F367] transition-all duration-200 cursor-pointer group">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-zinc-100 dark:bg-zinc-900 text-[#A3F367] group-hover:bg-[#A3F367]/10 transition-colors">
                         <Icon size={12} />
