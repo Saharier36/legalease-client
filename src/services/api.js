@@ -58,3 +58,7 @@ export const getUsers = async () => {
 export const getTransactions = async () => {
   return await serverFetch("/api/transactions");
 };
+
+export const getAnalytics = async () => {
+  return await serverFetch("/api/admin/analytics");
+};
