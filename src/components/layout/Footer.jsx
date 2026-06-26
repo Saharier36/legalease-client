@@ -84,7 +84,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/pricing"
+                    href="/register"
                     className="hover:text-[#A3F367] transition-colors"
                   >
                     Join as Lawyer
