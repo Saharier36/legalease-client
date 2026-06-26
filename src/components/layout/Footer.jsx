@@ -11,13 +11,14 @@ import {
   FaPaperPlane,
   FaScaleBalanced,
 } from "react-icons/fa6";
+import { toast } from "sonner";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
-    alert("Thank you for subscribing to LegalEase Newsletter!");
+    toast.success("Thank you for subscribing to LegalEase Newsletter!");
   };
 
   return (
