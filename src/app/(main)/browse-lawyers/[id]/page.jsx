@@ -3,6 +3,12 @@ import LawyerDetailsClient from "@/components/ui/LawyerDetailsClient";
 import { checkHiring, getLawyerById } from "@/services/api";
 import { getUserSession } from "@/core/session";
 
+export const metadata = {
+  title: "Lawyer Details | LegalEase",
+  description:
+    "View detailed lawyer profiles, services, and hiring options on LegalEase.",
+};
+
 export default async function LawyerDetails({ params }) {
   const { id } = await params;
 
@@ -20,7 +26,7 @@ export default async function LawyerDetails({ params }) {
 
   // Get session
   const user = await getUserSession();
-  
+
   let hasHired = false;
   if (user) {
     try {
