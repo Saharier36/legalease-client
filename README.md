@@ -1,10 +1,3 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/LegalEase-%23FFFFFF?style=flat-square&label=%20&labelColor=%23111111">
-    <img src="https://img.shields.io/badge/LegalEase-%231a1a2e?style=flat-square&label=%20&labelColor=%231a1a2e" height="1">
-  </picture>
-</p>
-
 <h1 align="center">⚖️ LegalEase</h1>
 <h3 align="center">Online Lawyer Hiring & Legal Service Marketplace</h3>
 
@@ -37,7 +30,6 @@
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
 - [Architecture & Directory Structure](#-architecture--directory-structure)
-- [System Analytics & Metrics Dashboard](#-system-analytics--metrics-dashboard)
 - [Website Mockup Showcase](#-website-mockup-showcase)
 - [Environment Variables](#-environment-variables)
 - [Local Installation Guide](#-local-installation-guide)
@@ -192,46 +184,6 @@ legalease-client/
 ├── postcss.config.mjs
 └── tailwind.config.js
 ```
-
----
-
-## 📊 System Analytics & Metrics Dashboard
-
-> _Mock data visualisation for the admin analytics panel._
-
-```
-┌────────────────────────────────────────────────────────────┐
-│                    PLATFORM OVERVIEW                       │
-├─────────────┬──────────────┬──────────────┬────────────────┤
-│  Total Hires│ Active Lawyers│  Total Users │  Conversion    │
-│    1,847     │      142      │    4,231     │    12.4%       │
-├─────────────┴──────────────┴──────────────┴────────────────┤
-│                                                           │
-│  Monthly Transaction Volume (Last 6 Months)                │
-│                                                           │
-│  $50K ┤    ██                                              │
-│  $40K ┤ ██ ██    ██                                       │
-│  $30K ┤ ██ ██ ██ ██ ██                                    │
-│  $20K ┤ ██ ██ ██ ██ ██ ██                                 │
-│  $10K ┤ ██ ██ ██ ██ ██ ██ ██                              │
-│       └───┬──┬──┬──┬──┬──┬──┬──                           │
-│           Jan Feb Mar Apr May Jun                          │
-│                                                           │
-│  Total Revenue: $247,890  │  Avg. Transaction: $134.20     │
-│  ─────────────────────────┴────────────────────────────   │
-│                                                           │
-│  User vs Lawyer Growth                                     │
-│  ┌─────────────────────────────────────────────────┐      │
-│  │   📈 Users    ████████████████████  4,231       │      │
-│  │   👨‍⚖️ Lawyers  ██████░░░░░░░░░░░░░░  142        │      │
-│  │   🔄 Hires    ████████████░░░░░░░░░░  1,847     │      │
-│  └─────────────────────────────────────────────────┘      │
-│                                                           │
-└────────────────────────────────────────────────────────────┘
-```
-
-_Note: Actual analytics charts are rendered dynamically using **Recharts** in the admin dashboard._
-
 ---
 
 ## 🎨 Website Mockup Showcase
@@ -243,24 +195,24 @@ _Note: Actual analytics charts are rendered dynamically using **Recharts** in th
     <tr>
       <td align="center" width="50%">
         <strong>🏠 Landing Page</strong><br/><br/>
-        <img src="https://via.placeholder.com/600x400/1a1a2e/ffffff?text=Landing+Page+Mockup" alt="Landing Page" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
-        <br/><em>Hero banner, featured lawyers, categories, CTA</em>
+        <img src="https://github.com/user-attachments/assets/6327efef-c747-4868-8eb1-9fe4aac8620f" alt="Landing Page" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
+        <br/><em>Hero banner</em>
       </td>
       <td align="center" width="50%">
         <strong>🔍 Browse Lawyers</strong><br/><br/>
-        <img src="https://via.placeholder.com/600x400/1a1a2e/ffffff?text=Browse+Lawyers+Mockup" alt="Browse Lawyers" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
-        <br/><em>Filterable grid with lawyer cards & ratings</em>
+        <img src="https://github.com/user-attachments/assets/c5871151-9cf6-4dc2-b0dd-519ec4089ff1" alt="Browse Lawyers" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
+        <br/><em>Filterable grid with lawyer cards</em>
       </td>
     </tr>
     <tr>
       <td align="center" width="50%">
         <strong>📋 Lawyer Dashboard</strong><br/><br/>
-        <img src="https://via.placeholder.com/600x400/1a1a2e/ffffff?text=Lawyer+Dashboard+Mockup" alt="Lawyer Dashboard" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
+        <img src="https://github.com/user-attachments/assets/c946dd06-47e3-495d-8a4b-4f04ba07a7ff" alt="Lawyer Dashboard" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
         <br/><em>Service management, analytics, case tracking</em>
       </td>
       <td align="center" width="50%">
         <strong>🛡️ Admin Panel</strong><br/><br/>
-        <img src="https://via.placeholder.com/600x400/1a1a2e/ffffff?text=Admin+Panel+Mockup" alt="Admin Panel" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
+        <img src="https://github.com/user-attachments/assets/a6266633-52ff-4958-990b-5e19be236c9d" alt="Admin Panel" width="100%" style="border-radius: 8px; border: 2px solid #333;" />
         <br/><em>User management, transactions, platform KPIs</em>
       </td>
     </tr>
@@ -414,6 +366,5 @@ Found a bug or have a feature request? [Open an issue](https://github.com/Sahari
 ---
 
 <p align="center">
-  <strong>Built with ❤️ by the LegalEase Team</strong><br/>
-  <sub>© 2026 LegalEase. All rights reserved.</sub>
+  <strong>Built by ❤️ Saharier Omi</strong><br/>
 </p>
