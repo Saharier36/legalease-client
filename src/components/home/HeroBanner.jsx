@@ -15,7 +15,7 @@ const SLIDE_DATA = [
     description:
       "LegalEase bridges the gap between top-tier verified lawyers and individuals or businesses seeking reliable legal services. Browse, discover, and hire your legal protector today.",
     image:
-      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80",
+      "https://i.ibb.co.com/jZJ9srs1/sasun-bughdaryan-e11-Oa3kvx4c-unsplash.jpg",
     buttonText: "Browse Lawyers",
     buttonLink: "/browse-lawyers",
     stats: [
@@ -30,7 +30,7 @@ const SLIDE_DATA = [
     description:
       "From corporate compliance to contract verifications, seamlessly connect with specialized legal consultants. Manage all your legal needs under one secure digital platform.",
     image:
-      "https://images.unsplash.com/photo-1436450412740-6b988f486c6b?auto=format&fit=crop&w=800&q=80",
+      "https://i.ibb.co.com/ycvhjxRb/rai-singh-uriarte-ZV0k-Xn-ONo-Ho-unsplash.jpg",
     buttonText: "Find Consultants",
     buttonLink: "/browse-lawyers",
     stats: [
@@ -45,7 +45,7 @@ const SLIDE_DATA = [
     description:
       "Are you a talented lawyer? Secure your spot, complete our hassle-free one-time verification payment, and unlock a massive network of active legal seekers today.",
     image:
-      "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80",
+      "https://i.ibb.co.com/fdRWkXqK/hunters-race-MYbh-N8-Kaa-Ec-unsplash.jpg",
     buttonText: "Join as a Lawyer",
     buttonLink: "/register",
     stats: [
