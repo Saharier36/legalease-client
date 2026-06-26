@@ -188,8 +188,6 @@ legalease-client/
 
 ## 🎨 Website Mockup Showcase
 
-> _Replace the placeholder below with your Figma design exports, screenshots, or product mockups._
-
 <p align="center">
   <table>
     <tr>
