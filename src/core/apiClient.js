@@ -1,3 +1,5 @@
+import { getUserToken } from "./session";
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5000";
 
 const handleError = async (res, defaultPrefix) => {
@@ -19,6 +21,16 @@ const handleError = async (res, defaultPrefix) => {
   }
 };
 
+export const authHeader = async () => {
+  const token = await getUserToken();
+  const header = token
+    ? {
+        authorization: `Bearer ${token}`,
+      }
+    : {};
+  return header;
+};
+
 // GET (Read)
 export const serverFetch = async (path) => {
   try {
@@ -30,6 +42,13 @@ export const serverFetch = async (path) => {
   }
 };
 
+export const protectedFetch = async (path) => {
+  const res = await fetch(`${baseUrl}${path}`, {
+    headers: await authHeader(),
+  });
+  return res.json();
+};
+
 // POST (Create)
 export const serverMutation = async (path, data) => {
   try {
@@ -37,6 +56,7 @@ export const serverMutation = async (path, data) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(await authHeader()),
       },
       body: JSON.stringify(data),
     });
@@ -54,6 +74,7 @@ export const serverUpdate = async (path, data, method = "PATCH") => {
       method: method,
       headers: {
         "Content-Type": "application/json",
+        ...(await authHeader()),
       },
       body: JSON.stringify(data),
     });
@@ -69,6 +90,9 @@ export const serverDelete = async (path) => {
   try {
     const res = await fetch(`${baseUrl}${path}`, {
       method: "DELETE",
+      headers: {
+        ...(await authHeader()),
+      },
     });
     if (!res.ok) return await handleError(res, "Delete error");
     return res.json();

@@ -1,4 +1,5 @@
-import { serverFetch } from "@/core/apiClient";
+"use server";
+import { protectedFetch, serverFetch } from "@/core/apiClient";
 
 export const fetchLawyerServices = async (lawyerId, status) => {
   const params = new URLSearchParams();
@@ -31,7 +32,7 @@ export const getLawyerById = async (id) => {
 };
 
 export const checkHiring = async (lawyerServiceId, userId) => {
-  return await serverFetch(
+  return await protectedFetch(
     `/api/hirings/check?lawyerServiceId=${lawyerServiceId}&userId=${userId}`,
   );
 };
@@ -40,7 +41,7 @@ export const getHirings = async (filters = {}) => {
   const params = new URLSearchParams();
   if (filters.lawyerId) params.append("lawyerId", filters.lawyerId);
   if (filters.userId) params.append("userId", filters.userId);
-  return await serverFetch(`/api/hirings?${params.toString()}`);
+  return await protectedFetch(`/api/hirings?${params.toString()}`);
 };
 
 export const getHiringById = async (id) => {
@@ -48,17 +49,17 @@ export const getHiringById = async (id) => {
 };
 
 export const getUserComments = async (userId) => {
-  return await serverFetch(`/api/comments/user?userId=${userId}`);
+  return await protectedFetch(`/api/comments/user?userId=${userId}`);
 };
 
 export const getUsers = async () => {
-  return await serverFetch("/api/users");
+  return await protectedFetch("/api/users");
 };
 
 export const getTransactions = async () => {
-  return await serverFetch("/api/transactions");
+  return await protectedFetch("/api/transactions");
 };
 
 export const getAnalytics = async () => {
-  return await serverFetch("/api/admin/analytics");
+  return await protectedFetch("/api/admin/analytics");
 };
