@@ -192,7 +192,7 @@ export default function EditServiceModal({ service, onRefresh }) {
 
               <Modal.Header className="p-5 border-b border-zinc-100 dark:border-zinc-900 shrink-0">
                 <div className="flex items-center gap-2">
-                  <MdModeEdit className="text-success text-xl" />
+                  <MdModeEdit className="text-[#A3F367] text-xl" />
                   <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
                     Edit Legal Service
                   </h2>
@@ -377,7 +377,7 @@ export default function EditServiceModal({ service, onRefresh }) {
                     slot="close"
                     type="submit"
                     isLoading={isSubmitting}
-                    className="bg-success text-zinc-950 font-bold px-6 h-9 rounded-none hover:bg-success/90 flex items-center justify-center gap-2 transition-all text-sm"
+                    className="bg-[#A3F367] text-zinc-950 font-bold px-6 h-9 rounded-none hover:bg-[#b5fa82] flex items-center justify-center gap-2 transition-all text-sm"
                   >
                     <FaSave /> Save Changes
                   </Button>
